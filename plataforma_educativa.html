@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma Educativa | Prof. Omar Luna Rangel</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --accent: #f59e0b;
+  --accent2: #06b6d4;
+  --accent3: #8b5cf6;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --border: rgba(255,255,255,0.08);
+  --gold: #fbbf24;
+  --teal: #2dd4bf;
+  --pink: #f472b6;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* Custom cursor */
+.cursor{
+  width:12px;height:12px;
+  background:var(--accent);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9999;
+  transition:transform 0.1s ease;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1.5px solid var(--accent2);
+  border-radius:50%;
+  position:fixed;top:0;left:0;
+  pointer-events:none;z-index:9998;
+  transition:all 0.15s ease;
+  opacity:0.6;
+}
+
+/* Floating particles */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{
+  position:absolute;
+  width:2px;height:2px;
+  background:var(--accent2);
+  border-radius:50%;
+  animation:floatUp linear infinite;
+  opacity:0;
+}
+@keyframes floatUp{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:0.3}
+  100%{transform:translateY(-10vh) scale(1.5);opacity:0}
+}
+
+/* Header */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(10,14,26,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.header-left{
+  display:flex;flex-direction:column;gap:2px;
+}
+.school-name{
+  font-family:'Space Mono',monospace;
+  font-size:10px;letter-spacing:3px;
+  color:var(--accent2);text-transform:uppercase;
+}
+.teacher-name{
+  font-family:'Playfair Display',serif;
+  font-size:20px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.platform-label{
+  font-size:11px;color:var(--text2);letter-spacing:1px;
+}
+.header-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  background:rgba(245,158,11,0.1);
+  border:1px solid rgba(245,158,11,0.3);
+  border-radius:30px;
+  font-size:12px;font-family:'Space Mono',monospace;
+  color:var(--gold);letter-spacing:1px;
+}
+.pulse-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:0.5}}
+
+/* Hero / Main view */
+#app{padding-top:80px;min-height:100vh;position:relative;z-index:1}
+
+/* Page sections */
+.page{display:none;animation:fadeIn 0.5s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Home Hero */
+.hero{
+  min-height:calc(100vh - 80px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero-bg-text{
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(80px,15vw,200px);
+  font-weight:900;
+  color:rgba(255,255,255,0.02);
+  letter-spacing:-10px;
+  user-select:none;
+  animation:bgTextFloat 8s ease-in-out infinite;
+}
+@keyframes bgTextFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;
+  background:rgba(6,182,212,0.1);
+  border:1px solid rgba(6,182,212,0.3);
+  border-radius:20px;
+  font-size:11px;letter-spacing:2px;
+  color:var(--accent2);
+  font-family:'Space Mono',monospace;
+  margin-bottom:24px;
+  animation:slideDown 0.8s ease 0.2s both;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,6vw,80px);
+  font-weight:900;
+  line-height:1.05;
+  margin-bottom:20px;
+  animation:slideUp 0.8s ease 0.3s both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.hero h1 span{
+  background:linear-gradient(135deg,var(--gold) 0%,var(--pink) 50%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200%;
+  animation:gradientShift 4s ease infinite;
+}
+@keyframes gradientShift{0%,100%{background-position:0%}50%{background-position:100%}}
+
+.hero p{
+  font-size:18px;color:var(--text2);max-width:500px;
+  margin-bottom:50px;line-height:1.7;
+  animation:slideUp 0.8s ease 0.4s both;
+}
+
+/* Grade cards */
+.grades-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  max-width:900px;width:100%;
+  animation:slideUp 0.8s ease 0.5s both;
+}
+.grade-card{
+  position:relative;
+  padding:36px 28px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  overflow:hidden;
+  text-align:left;
+}
+.grade-card::before{
+  content:'';position:absolute;inset:0;
+  opacity:0;transition:opacity 0.4s ease;
+}
+.grade-card:nth-child(1)::before{background:radial-gradient(circle at 50% 0%,rgba(245,158,11,0.15),transparent 70%)}
+.grade-card:nth-child(2)::before{background:radial-gradient(circle at 50% 0%,rgba(6,182,212,0.15),transparent 70%)}
+.grade-card:nth-child(3)::before{background:radial-gradient(circle at 50% 0%,rgba(139,92,246,0.15),transparent 70%)}
+.grade-card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(255,255,255,0.2)}
+.grade-card:hover::before{opacity:1}
+
+.grade-card.locked{opacity:0.5;cursor:not-allowed}
+.grade-card.locked:hover{transform:none}
+
+.grade-number{
+  font-family:'Space Mono',monospace;
+  font-size:56px;font-weight:700;
+  line-height:1;margin-bottom:8px;
+}
+.grade-card:nth-child(1) .grade-number{color:var(--gold)}
+.grade-card:nth-child(2) .grade-number{color:var(--accent2)}
+.grade-card:nth-child(3) .grade-number{color:var(--accent3)}
+
+.grade-label{font-size:18px;font-weight:600;margin-bottom:6px}
+.grade-sub{font-size:12px;color:var(--text2)}
+.grade-status{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:16px;padding:4px 12px;
+  border-radius:20px;font-size:11px;
+  font-family:'Space Mono',monospace;letter-spacing:1px;
+}
+.status-active{background:rgba(6,182,212,0.15);color:var(--accent2);border:1px solid rgba(6,182,212,0.3)}
+.status-locked{background:rgba(148,163,184,0.1);color:var(--text2);border:1px solid rgba(255,255,255,0.1)}
+
+/* Corner decoration */
+.card-deco{
+  position:absolute;top:16px;right:16px;
+  font-size:32px;opacity:0.15;
+  transition:all 0.4s ease;
+}
+.grade-card:hover .card-deco{opacity:0.4;transform:rotate(15deg) scale(1.2)}
+
+/* Inner pages */
+.inner-page{padding:40px;max-width:1100px;margin:0 auto}
+
+.page-header{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:48px;
+}
+.back-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:40px;height:40px;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:12px;cursor:pointer;
+  font-size:18px;transition:all 0.2s ease;
+  color:var(--text);
+}
+.back-btn:hover{background:var(--surface);border-color:rgba(255,255,255,0.2);transform:translateX(-3px)}
+
+.page-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,4vw,48px);font-weight:900;
+}
+.page-title span{
+  background:linear-gradient(135deg,var(--gold),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+
+/* Genre selector */
+.topic-label{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 16px;
+  background:rgba(139,92,246,0.1);
+  border:1px solid rgba(139,92,246,0.3);
+  border-radius:20px;font-size:12px;letter-spacing:2px;
+  color:var(--accent3);font-family:'Space Mono',monospace;
+  margin-bottom:32px;
+}
+
+.genres-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-bottom:40px;
+}
+.genre-btn{
+  padding:20px 16px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;text-align:center;
+  transition:all 0.3s ease;
+  color:var(--text);
+}
+.genre-btn:hover,.genre-btn.selected{
+  border-color:var(--accent2);
+  background:rgba(6,182,212,0.1);
+  transform:translateY(-4px);
+}
+.genre-icon{font-size:28px;margin-bottom:8px}
+.genre-name{font-size:13px;font-weight:600;letter-spacing:1px}
+
+/* Reading list */
+.readings-grid{
+  display:grid;gap:12px;
+}
+.reading-item{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 24px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+.reading-item:hover{
+  border-color:rgba(245,158,11,0.4);
+  background:rgba(245,158,11,0.05);
+  transform:translateX(6px);
+}
+.reading-num{
+  font-family:'Space Mono',monospace;
+  font-size:20px;font-weight:700;
+  color:var(--gold);min-width:32px;
+}
+.reading-info{flex:1}
+.reading-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.reading-meta{font-size:12px;color:var(--text2)}
+.reading-arrow{font-size:18px;color:var(--text2);transition:transform 0.2s ease}
+.reading-item:hover .reading-arrow{transform:translateX(4px)}
+
+/* Reading content */
+.reading-content{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:48px;
+  margin-bottom:32px;
+  position:relative;
+  overflow:hidden;
+}
+.reading-content::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--gold),var(--accent2),var(--accent3));
+}
+.reading-content h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,3vw,36px);font-weight:900;
+  margin-bottom:8px;
+}
+.reading-content .genre-tag{
+  display:inline-block;
+  padding:3px 12px;
+  background:rgba(6,182,212,0.15);
+  border-radius:20px;font-size:11px;
+  color:var(--accent2);letter-spacing:2px;
+  font-family:'Space Mono',monospace;
+  margin-bottom:28px;
+}
+.reading-text{
+  font-size:16px;line-height:1.9;
+  color:#cbd5e1;
+  max-width:680px;
+}
+.reading-text p{margin-bottom:18px}
+
+/* Quiz */
+.quiz-section{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:40px;
+  margin-bottom:24px;
+}
+.quiz-section h3{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+}
+.question-item{margin-bottom:28px}
+.question-text{font-size:15px;font-weight:500;margin-bottom:14px;line-height:1.6}
+.question-num{
+  font-family:'Space Mono',monospace;font-size:12px;
+  color:var(--gold);margin-bottom:6px;letter-spacing:1px;
+}
+.answer-input{
+  width:100%;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px 16px;
+  color:var(--text);font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  resize:vertical;min-height:70px;
+  transition:border-color 0.2s ease;
+}
+.answer-input:focus{outline:none;border-color:var(--accent2)}
+
+/* Activities */
+.activities-section{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:40px;
+  margin-bottom:24px;
+}
+.activity-item{
+  padding:24px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:16px;
+}
+.activity-title{
+  font-size:14px;font-weight:600;
+  color:var(--accent2);letter-spacing:1px;
+  font-family:'Space Mono',monospace;
+  margin-bottom:10px;
+}
+.activity-desc{font-size:14px;line-height:1.7;color:var(--text2);margin-bottom:16px}
+.activity-area{
+  width:100%;min-height:100px;
+  background:rgba(255,255,255,0.04);
+  border:1px dashed rgba(255,255,255,0.15);
+  border-radius:10px;padding:14px;
+  color:var(--text);font-size:14px;
+  font-family:'DM Sans',sans-serif;resize:vertical;
+}
+.activity-area:focus{outline:none;border-color:var(--accent3)}
+
+/* Submit btn */
+.submit-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 32px;
+  background:linear-gradient(135deg,var(--gold),var(--pink));
+  border:none;border-radius:30px;
+  color:#0a0e1a;font-size:14px;font-weight:700;
+  font-family:'DM Sans',sans-serif;letter-spacing:1px;cursor:pointer;
+  transition:all 0.3s ease;
+}
+.submit-btn:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(245,158,11,0.4)}
+
+/* Add topic section */
+.add-topic-area{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+.upload-card{
+  padding:32px;
+  border-radius:20px;
+  border:2px dashed rgba(255,255,255,0.15);
+  background:var(--surface);
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+.upload-card:hover{
+  border-color:var(--accent2);
+  background:rgba(6,182,212,0.05);
+}
+.upload-icon{font-size:48px;margin-bottom:16px}
+.upload-title{font-size:16px;font-weight:600;margin-bottom:8px}
+.upload-sub{font-size:12px;color:var(--text2)}
+
+.form-group{margin-bottom:20px}
+.form-label{
+  display:block;font-size:12px;
+  letter-spacing:2px;color:var(--text2);
+  font-family:'Space Mono',monospace;
+  margin-bottom:8px;text-transform:uppercase;
+}
+.form-input,.form-select,.form-textarea{
+  width:100%;padding:12px 16px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text);font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  transition:border-color 0.2s ease;
+}
+.form-input:focus,.form-select:focus,.form-textarea:focus{
+  outline:none;border-color:var(--accent2);
+}
+.form-select option{background:#1a2235}
+.form-textarea{resize:vertical;min-height:120px}
+
+/* Grade 3 topic cards */
+.topics-grid{display:grid;gap:14px}
+.topic-card{
+  display:flex;align-items:center;gap:18px;
+  padding:22px 26px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+.topic-card:hover{
+  border-color:rgba(139,92,246,0.4);
+  background:rgba(139,92,246,0.05);
+  transform:translateX(6px);
+}
+.topic-icon{font-size:28px;min-width:44px;text-align:center}
+.topic-info{flex:1}
+.topic-title{font-size:15px;font-weight:600;margin-bottom:4px}
+.topic-meta{font-size:12px;color:var(--text2)}
+.topic-badge{
+  padding:4px 12px;
+  border-radius:20px;font-size:10px;
+  font-family:'Space Mono',monospace;letter-spacing:1px;
+  background:rgba(139,92,246,0.15);
+  color:var(--accent3);
+  border:1px solid rgba(139,92,246,0.3);
+}
+
+/* Divider */
+.section-divider{
+  display:flex;align-items:center;gap:16px;
+  margin:40px 0;color:var(--text2);font-size:12px;
+  letter-spacing:2px;font-family:'Space Mono',monospace;
+}
+.section-divider::before,.section-divider::after{
+  content:'';flex:1;height:1px;
+  background:var(--border);
+}
+
+/* Success toast */
+.toast{
+  position:fixed;bottom:30px;right:30px;
+  padding:14px 24px;
+  background:var(--surface2);
+  border:1px solid rgba(45,212,191,0.4);
+  border-radius:12px;
+  font-size:13px;color:var(--teal);
+  z-index:200;
+  transform:translateY(100px);opacity:0;
+  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.2)}
+
+/* Responsive */
+@media(max-width:768px){
+  .grades-grid{grid-template-columns:1fr}
+  .genres-grid{grid-template-columns:repeat(2,1fr)}
+  .add-topic-area{grid-template-columns:1fr}
+  header{padding:12px 20px}
+  .inner-page{padding:20px}
+  .reading-content{padding:28px}
+}
+
+/* Scroll-reveal */
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:all 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Nav breadcrumb */
+.breadcrumb{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text2);
+  font-family:'Space Mono',monospace;
+  margin-bottom:24px;
+}
+.breadcrumb span{color:var(--accent2)}
+.breadcrumb .sep{opacity:0.4}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="particles" id="particles"></div>
+<div class="toast" id="toast">✓ Guardado correctamente</div>
+
+<header>
+  <div class="header-left">
+    <span class="school-name">⬡ Escuelas Secundarias Técnicas</span>
+    <span class="teacher-name">Prof. Omar Luna Rangel</span>
+    <span class="platform-label">Plataforma Educativa</span>
+  </div>
+  <div class="header-badge">
+    <span class="pulse-dot"></span>
+    <span>En línea</span>
+  </div>
+</header>
+
+<div id="app">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-bg-text">EDU</div>
+      <div class="hero-tag">✦ Ciclo escolar 2024 – 2025</div>
+      <h1>Bienvenido a tu<br><span>Plataforma Educativa</span></h1>
+      <p>Selecciona tu grado escolar para comenzar con las actividades de aprendizaje.</p>
+      <div class="grades-grid">
+        <div class="grade-card locked" onclick="showLocked()">
+          <div class="card-deco">🔒</div>
+          <div class="grade-number">1°</div>
+          <div class="grade-label">Primer Año</div>
+          <div class="grade-sub">Secundaria</div>
+          <div class="grade-status status-locked">◉ Próximamente</div>
+        </div>
+        <div class="grade-card" onclick="goTo('page-2grado')">
+          <div class="card-deco">📖</div>
+          <div class="grade-number">2°</div>
+          <div class="grade-label">Segundo Año</div>
+          <div class="grade-sub">Secundaria</div>
+          <div class="grade-status status-active">◉ Disponible</div>
+        </div>
+        <div class="grade-card" onclick="goTo('page-3grado')">
+          <div class="card-deco">✨</div>
+          <div class="grade-number">3°</div>
+          <div class="grade-label">Tercer Año</div>
+          <div class="grade-sub">Secundaria</div>
+          <div class="grade-status status-active">◉ Disponible</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2DO GRADO -->
+  <div class="page" id="page-2grado">
+    <div class="inner-page">
+      <div class="breadcrumb"><span onclick="goTo('page-home')" style="cursor:pointer">Inicio</span><span class="sep">/</span><span>2° Secundaria</span></div>
+      <div class="page-header">
+        <div class="back-btn" onclick="goTo('page-home')">←</div>
+        <div>
+          <div class="page-title">Segundo Año <span>de Secundaria</span></div>
+        </div>
+      </div>
+      <div class="topic-label">📚 TEMA PRINCIPAL</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,32px);margin-bottom:8px;">Lectura fluida y comprensiva de textos</h2>
+      <p style="color:var(--text2);margin-bottom:40px;font-size:15px;">Selecciona un género literario para explorar sus textos</p>
+
+      <div class="genres-grid" id="genres-grid">
+        <div class="genre-btn" onclick="selectGenre('cuentos','2')"><div class="genre-icon">📜</div><div class="genre-name">CUENTOS</div></div>
+        <div class="genre-btn" onclick="selectGenre('novelas','2')"><div class="genre-icon">📕</div><div class="genre-name">NOVELAS</div></div>
+        <div class="genre-btn" onclick="selectGenre('fabulas','2')"><div class="genre-icon">🦊</div><div class="genre-name">FÁBULAS</div></div>
+        <div class="genre-btn" onclick="selectGenre('mitos','2')"><div class="genre-icon">⚡</div><div class="genre-name">MITOS</div></div>
+        <div class="genre-btn" onclick="selectGenre('leyendas','2')"><div class="genre-icon">🌙</div><div class="genre-name">LEYENDAS</div></div>
+        <div class="genre-btn" onclick="selectGenre('poemas','2')"><div class="genre-icon">🌹</div><div class="genre-name">POEMAS</div></div>
+      </div>
+
+      <div id="readings-list-2" style="display:none">
+        <div class="section-divider">TEXTOS DISPONIBLES</div>
+        <div class="readings-grid" id="readings-container-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3ER GRADO -->
+  <div class="page" id="page-3grado">
+    <div class="inner-page">
+      <div class="breadcrumb"><span onclick="goTo('page-home')" style="cursor:pointer">Inicio</span><span class="sep">/</span><span>3° Secundaria</span></div>
+      <div class="page-header">
+        <div class="back-btn" onclick="goTo('page-home')">←</div>
+        <div>
+          <div class="page-title">Tercer Año <span>de Secundaria</span></div>
+        </div>
+      </div>
+      <div class="topic-label">📚 TEMA PRINCIPAL</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,32px);margin-bottom:8px;">Lectura autónoma y comprensiva de textos extensos</h2>
+      <p style="color:var(--text2);margin-bottom:40px;font-size:15px;">Textos complejos para desarrollar tu comprensión lectora avanzada</p>
+
+      <div class="topics-grid" id="topics-list-3">
+        <!-- Populated by JS -->
+      </div>
+
+      <div style="margin-top:40px">
+        <div class="section-divider">AGREGAR NUEVO TEMA</div>
+        <button class="submit-btn" onclick="goTo('page-addtopic')" style="margin-bottom:10px">
+          <span>＋</span> Agregar Tema
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- READING PAGE -->
+  <div class="page" id="page-reading">
+    <div class="inner-page">
+      <div class="breadcrumb" id="reading-breadcrumb"></div>
+      <div class="page-header">
+        <div class="back-btn" id="reading-back-btn">←</div>
+        <div class="page-title" id="reading-page-title">Lectura</div>
+      </div>
+      <div class="reading-content" id="reading-content-area"></div>
+      <div class="quiz-section" id="quiz-comprension">
+        <h3>🧠 Cuestionario de Comprensión</h3>
+        <div id="comprension-questions"></div>
+      </div>
+      <div class="quiz-section" id="quiz-reflexion">
+        <h3>💭 Cuestionario de Reflexión</h3>
+        <div id="reflexion-questions"></div>
+      </div>
+      <div class="activities-section" id="activities-area">
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:24px;display:flex;align-items:center;gap:10px;">🎨 Actividades</h3>
+        <div id="activities-content"></div>
+      </div>
+      <div style="text-align:center;padding:20px 0">
+        <button class="submit-btn" onclick="submitQuiz()">
+          ✓ Enviar respuestas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD TOPIC PAGE -->
+  <div class="page" id="page-addtopic">
+    <div class="inner-page">
+      <div class="breadcrumb"><span onclick="goTo('page-home')" style="cursor:pointer">Inicio</span><span class="sep">/</span><span>Agregar Tema</span></div>
+      <div class="page-header">
+        <div class="back-btn" onclick="goTo('page-3grado')">←</div>
+        <div class="page-title">Agregar <span>Nuevo Tema</span></div>
+      </div>
+
+      <div class="add-topic-area">
+        <div>
+          <div class="form-group">
+            <label class="form-label">Nombre del Tema</label>
+            <input type="text" class="form-input" id="topic-name" placeholder="Ej: Comprensión de textos argumentativos">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Grado</label>
+            <select class="form-select" id="topic-grade">
+              <option value="">Seleccionar grado</option>
+              <option value="2">2° Secundaria</option>
+              <option value="3">3° Secundaria</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Género / Tipo</label>
+            <select class="form-select" id="topic-genre">
+              <option value="">Seleccionar tipo</option>
+              <option>Cuento</option><option>Novela</option><option>Fábula</option>
+              <option>Mito</option><option>Leyenda</option><option>Poema</option>
+              <option>Noticia</option><option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Título del Texto</label>
+            <input type="text" class="form-input" id="topic-title" placeholder="Título de la lectura">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contenido / Lectura</label>
+            <textarea class="form-textarea" id="topic-content" rows="6" placeholder="Pega aquí el texto de la lectura..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preguntas de Comprensión (una por línea)</label>
+            <textarea class="form-textarea" id="topic-comprension" rows="5" placeholder="1. ¿De qué trata el texto?&#10;2. ¿Quiénes son los personajes principales?&#10;..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Preguntas de Reflexión (una por línea)</label>
+            <textarea class="form-textarea" id="topic-reflexion" rows="5" placeholder="1. ¿Qué enseñanza te deja este texto?&#10;2. ¿Cómo te sentiste al leerlo?&#10;..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Actividades (una por línea)</label>
+            <textarea class="form-textarea" id="topic-activities" rows="4" placeholder="Actividad 1: Escribe un resumen...&#10;Actividad 2: Dibuja el personaje principal..."></textarea>
+          </div>
+          <button class="submit-btn" onclick="saveTopic()" style="width:100%;justify-content:center;margin-top:10px">
+            ✓ Guardar Tema
+          </button>
+        </div>
+
+        <div>
+          <div class="upload-card" onclick="document.getElementById('file-upload').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-title">Subir Archivo</div>
+            <div class="upload-sub">Arrastra o haz clic para subir un documento con la actividad completa</div>
+            <input type="file" id="file-upload" style="display:none" onchange="handleFileUpload(event)">
+          </div>
+          <div style="margin-top:20px;padding:24px;background:var(--surface);border-radius:16px;border:1px solid var(--border)">
+            <div style="font-size:12px;letter-spacing:2px;color:var(--text2);font-family:'Space Mono',monospace;margin-bottom:16px">VISTA PREVIA</div>
+            <div id="preview-area" style="font-size:13px;color:var(--text2);line-height:1.7">
+              Completa el formulario para ver una vista previa del tema...
+            </div>
+          </div>
+          <div style="margin-top:20px;padding:24px;background:var(--surface);border-radius:16px;border:1px solid var(--border)">
+            <div style="font-size:12px;letter-spacing:2px;color:var(--text2);font-family:'Space Mono',monospace;margin-bottom:16px">TEMAS AGREGADOS</div>
+            <div id="custom-topics-preview" style="font-size:13px;color:var(--text2)">No hay temas agregados aún.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+// ──────────────── CURSOR ────────────────
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px';
+});
+function animateRing(){
+  rx+=(mx-rx-18)*0.12;ry+=(my-ry-18)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}animateRing();
+document.querySelectorAll('button,a,[onclick]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.transform='scale(1.5)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)'});
+});
+
+// ──────────────── PARTICLES ────────────────
+const pContainer=document.getElementById('particles');
+for(let i=0;i<40;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.style.cssText=`left:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;background:${['#f59e0b','#06b6d4','#8b5cf6','#f472b6'][Math.floor(Math.random()*4)]}`;
+  pContainer.appendChild(p);
+}
+
+// ──────────────── NAVIGATION ────────────────
+let currentPage='page-home';
+function goTo(id){
+  document.getElementById(currentPage).classList.remove('active');
+  document.getElementById(id).classList.add('active');
+  currentPage=id;
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='page-3grado') renderGrade3Topics();
+  if(id==='page-addtopic') updateCustomTopicsPreview();
+}
+
+function showLocked(){showToast('⏳ Contenido próximamente disponible');}
+
+// ──────────────── TOAST ────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ──────────────── CONTENT DATA ────────────────
+const content={
+  '2':{
+    cuentos:[
+      {title:"El espejo que no miente",meta:"Cuento • 5 min",text:`<p>En el pueblo de San Isidro vivía Marta, una niña de doce años que siempre mentía para evitar problemas. Un día, en el mercado, encontró un espejo antiguo con marco de madera dorada. La vendedora, una anciana de ojos grises, le dijo: "Este espejo solo muestra la verdad."</p><p>Marta lo llevó a casa y al mirarse, vio reflejada no su imagen habitual, sino la de ella cuando le había mentido a su madre sobre las tareas, cuando culpó a su hermano de romper el florero, cuando fingió estar enferma para no ir a la escuela.</p><p>Aterrada, quiso romper el espejo, pero su mano se detuvo. Una voz suave emergió del cristal: "Romperte no resolverá nada. La verdad vive dentro de ti, no dentro de mí."</p><p>Esa noche, Marta no pudo dormir. Al amanecer, bajó y le confesó todo a su madre. Las lágrimas corrieron por sus mejillas, pero también una extraña ligereza llenó su pecho. Cuando volvió a mirarse en el espejo, vio simplemente su propio rostro, sonriendo por primera vez con honestidad.</p>`,
+      comprension:["¿Qué encontró Marta en el mercado?","¿Qué mostraba el espejo especial?","¿Qué vio Marta al mirarse en el espejo?","¿Qué hizo Marta al amanecer?","¿Cómo se sintió Marta después de confesar?"],
+      reflexion:["¿Por qué crees que Marta mentía?","¿Has mentido alguna vez para evitar problemas? ¿Cómo te sentiste?","¿Qué enseñanza nos deja este cuento?","¿Crees que la honestidad siempre es el mejor camino? ¿Por qué?","¿Qué harías tú si encontraras ese espejo?"],
+      act1:{title:"Actividad 1 – Escena alternativa",desc:"Imagina que Marta decide romper el espejo. Escribe cómo continuaría la historia a partir de ese momento."},
+      act2:{title:"Actividad 2 – Reflexión personal",desc:"Dibuja o describe con palabras cómo sería tu reflejo en el espejo de la honestidad."}},
+      {title:"La biblioteca de los sueños",meta:"Cuento • 6 min",text:`<p>Nadie sabía exactamente cuándo había aparecido la biblioteca. Un día no estaba, y al siguiente ocupaba toda la esquina de la Calle del Viento. Tenía ventanas azules y una puerta de madera que olía a canela.</p><p>Lucas, de trece años, fue el primero en entrar. Las estantes llegaban hasta el techo y los libros brillaban suavemente. Una etiqueta en la entrada decía: "Cada libro contiene el sueño de alguien. Al leerlo, lo compartes."</p><p>Lucas tomó un libro delgado de portada verde. Al abrirlo, sintió que volaba sobre una ciudad iluminada por luciérnagas. Vio a una niña pequeña buscando a su perro entre calles de piedra. Sintió su angustia, su esperanza, su alegría cuando el perro apareció detrás de un árbol.</p><p>Cuando cerró el libro, Lucas tenía lágrimas en los ojos. No eran suyas, pero las sentía completamente. Desde ese día, visitó la biblioteca cada tarde, viviendo sueños ajenos hasta entender que todos los sueños, de algún modo, eran también suyos.</p>`,
+      comprension:["¿Dónde apareció misteriosamente la biblioteca?","¿Qué decía la etiqueta en la entrada?","¿Qué sintió Lucas al abrir el libro verde?","¿De quién era el sueño que Lucas leyó?","¿Qué hacía Lucas cada tarde desde ese día?"],
+      reflexion:["¿Por qué crees que la biblioteca apareció de repente?","¿Qué sueño tuyo te gustaría que otros pudieran leer?","¿Crees que leer libros es similar a vivir otros sueños? ¿Por qué?","¿Qué significa la frase 'todos los sueños son también suyos'?","¿Qué tipo de libro elegirías en esa biblioteca?"],
+      act1:{title:"Actividad 1 – Mi sueño en un libro",desc:"Escribe el resumen de un libro que contendría tu sueño más importante. ¿Qué sentiría quien lo lea?"},
+      act2:{title:"Actividad 2 – Diseño de portada",desc:"Diseña (dibuja o describe) la portada del libro que representa tu sueño más grande."}},
+      {title:"El chico que coleccionaba palabras",meta:"Cuento • 5 min",text:`<p>Diego guardaba palabras en frascos de vidrio. No metáforas, no ideas: palabras reales que atrapaba con una red invisible que colgaba de su ventana.</p><p>Tenía un frasco lleno de "mañanas", otro con "quizás", uno pequeño con solo tres "amores" y uno enorme, casi vacío, con un único "quédate".</p><p>Su maestra, la señorita Blanca, supo de su colección y lo invitó a compartirla en clase. Diego llegó con una caja de frascos tintineando. Los abrió uno por uno y las palabras flotaron en el aire del salón.</p><p>"Valor", "esperanza", "perdón", "gracias" llenaron el espacio. Los compañeros de Diego comenzaron a atrapar palabras para llevarse a casa. Al final, la caja estaba vacía, pero Diego se sentía más lleno que nunca.</p><p>Esa tarde colocó solo un frasco nuevo en su ventana, con una etiqueta que decía: "Para llenar entre todos."</p>`,
+      comprension:["¿Qué coleccionaba Diego?","¿Cómo atrapaba las palabras Diego?","¿Qué había en el frasco casi vacío?","¿Qué hicieron los compañeros con las palabras?","¿Qué escribió Diego en la etiqueta del frasco nuevo?"],
+      reflexion:["¿Cuáles tres palabras guardarías tú en un frasco? ¿Por qué?","¿Qué significa que Diego 'se sentía más lleno' después de regalar sus palabras?","¿Crees que las palabras tienen poder? Da un ejemplo.","¿Qué palabra crees que falta más en el mundo hoy?","¿Qué crees que pasará con el frasco nuevo de Diego?"],
+      act1:{title:"Actividad 1 – Mi frasco de palabras",desc:"Dibuja tres frascos y escribe dentro las palabras más importantes en tu vida. Explica por qué elegiste cada una."},
+      act2:{title:"Actividad 2 – Carta a una palabra",desc:"Escribe una carta corta a una palabra que sea muy importante para ti, explicándole lo que significa en tu vida."}},
+      {title:"La última estrella del sur",meta:"Cuento • 6 min",text:`<p>La noche que Sofía cumplió doce años, su abuelo la llevó al cerro más alto del pueblo. Traía consigo un telescopio viejo y una lista de constelaciones escritas a mano.</p><p>"Busca la última estrella del sur", le dijo. "Cuando la encuentres, sabrás lo que buscas en la vida."</p><p>Sofía miró durante horas. Vio a Orión, al Escorpión, a las Pléyades. Pero no encontró lo que su abuelo llamaba "la última estrella." Cuando ya estaba por rendirse, notó que su abuelo también miraba, pero no al cielo sino a ella.</p><p>"¿Ya la encontraste?" preguntó él. Sofía negó con la cabeza. El abuelo sonrió: "Llevo cincuenta años buscándola. Creo que lo importante no es encontrarla, sino seguir mirando."</p><p>Sofía bajó el telescopio y miró el cielo con sus propios ojos. Las estrellas parpadearon como si entendieran algo que ella aún estaba aprendiendo.</p>`,
+      comprension:["¿A dónde llevó el abuelo a Sofía?","¿Qué buscaba Sofía con el telescopio?","¿Cuánto tiempo llevaba el abuelo buscando la estrella?","¿Qué hacía el abuelo mientras Sofía miraba el cielo?","¿Qué reflexión hace el abuelo al final?"],
+      reflexion:["¿Cuál crees que es el verdadero mensaje del abuelo?","¿Hay algo en tu vida que buscas sin encontrar? ¿Cómo te hace sentir eso?","¿Crees que el proceso de buscar es más valioso que encontrar? ¿Por qué?","¿Qué representa la 'última estrella del sur' para ti?","¿Qué aprendiste de la relación entre Sofía y su abuelo?"],
+      act1:{title:"Actividad 1 – Mi estrella personal",desc:"Escribe qué representa para ti la 'última estrella del sur'. ¿Qué es lo que buscas en tu vida actualmente?"},
+      act2:{title:"Actividad 2 – Diálogo intergeneracional",desc:"Escribe un diálogo de al menos 10 intercambios entre tú y un familiar mayor sobre lo que cada uno busca en la vida."}},
+      {title:"El río que hablaba dormido",meta:"Cuento • 5 min",text:`<p>Todos en el pueblo sabían que el río Azul murmuraba cosas cuando dormía. No eran burbujeos comunes: eran frases enteras, historias, secretos de otras épocas.</p><p>Ana, la hija del pescador, se sentaba cada noche a escuchar. Llevaba un cuaderno donde anotaba lo que el río decía: "El árbol grande guarda un nombre. La piedra roja recuerda una promesa. El viento del norte trae cartas sin destino."</p><p>Un día, el río empezó a hablar más rápido, con urgencia. Ana apenas podía escribir. El mensaje era claro: "El dique que construyen acabará con mi voz. Cuando me detengan, olvidaré."</p><p>Ana reunió sus cuadernos y los llevó a la escuela, al alcalde, a los periodistas. No pudo detener el dique, pero publicó un libro con todas las palabras del río. Hoy, aunque el Azul ya no habla, su voz vive en cada página.</p>`,
+      comprension:["¿Qué hacía el río Azul cuando dormía?","¿Qué anotaba Ana en su cuaderno?","¿Cuál era el mensaje urgente del río?","¿A quiénes llevó Ana sus cuadernos?","¿Cómo preservó Ana la voz del río?"],
+      reflexion:["¿Qué simboliza el río que habla en este cuento?","¿Crees que es importante preservar la historia de los lugares? ¿Por qué?","¿Qué habrías hecho tú en lugar de Ana?","¿Conoces algún lugar en tu comunidad que tenga historias importantes?","¿Qué significa que 'la voz del río vive en cada página'?"],
+      act1:{title:"Actividad 1 – Las palabras de mi lugar",desc:"Escribe 5 cosas que 'diría' tu barrio o comunidad si pudiera hablar. ¿Qué historias contaría?"},
+      act2:{title:"Actividad 2 – Carta de preservación",desc:"Escribe una carta al ayuntamiento de tu ciudad defendiendo la preservación de un lugar o tradición importante para ti."}}
+    ],
+    novelas:[
+      {title:"Las cartas de Alejandro",meta:"Novela (fragmento) • 8 min",text:`<p>Primer día. La nueva escuela olía a pintura fresca y expectativas. Alejandro cargaba su mochila como si tuviera piedras adentro: el peso de ser nuevo, de no conocer a nadie, de tener que empezar otra vez.</p><p>Se sentó en la última fila. Desde ahí podía observar sin ser observado. La maestra González tenía voz de radio y movimientos de directora de teatro. Le caía bien.</p><p>Semana tres. El chico del primer banco, Rodrigo, le pasó una nota doblada cuatro veces. Alejandro la abrió con cuidado: "¿Juegas ajedrez?" Alejandro no sabía jugar, pero escribió "sí" y la mandó de regreso.</p><p>Esa tarde, Rodrigo le enseñó las piezas sobre un tablero de cartón. Alejandro perdió todas las partidas pero ganó algo que no sabía que le faltaba.</p><p>Tres meses después. Alejandro encontró en su cuaderno viejo una lista que había escrito el primer día: "Cosas que necesito: amigos, rutina, no sentirme invisible." Las tachó una por una. Junto a la lista escribió: "Encontrado."</p>`,
+      comprension:["¿Por qué sentía Alejandro su mochila tan pesada?","¿Cómo era la maestra González?","¿Qué decía la nota que le pasó Rodrigo?","¿Qué ganó Alejandro al jugar ajedrez con Rodrigo?","¿Qué había escrito Alejandro en su lista el primer día?"],
+      reflexion:["¿Has sentido alguna vez lo que siente Alejandro al llegar a un lugar nuevo?","¿Qué significa 'ganar algo que no sabía que le faltaba'?","¿Qué importancia tienen las amistades en la escuela?","¿Qué harías tú para ayudar a alguien que llega nuevo a tu clase?","¿Qué tres cosas escribirías tú en tu lista de 'cosas que necesito'?"],
+      act1:{title:"Actividad 1 – Mi primera semana",desc:"Escribe un fragmento de diario contando tu primera semana en la secundaria o en algún lugar nuevo que hayas visitado."},
+      act2:{title:"Actividad 2 – Mapa de conexiones",desc:"Dibuja un mapa donde estés tú en el centro y conecta con líneas a las personas importantes en tu vida, explicando qué te une a cada una."}},
+      {title:"El verano de los inventos",meta:"Novela (fragmento) • 8 min",text:`<p>Capítulo 1. El verano que Valentina cumplió catorce años fue también el verano en que decidió inventar algo que cambiara el mundo. No sabía qué, exactamente. Empezó con un cuaderno cuadriculado y un lápiz mordido.</p><p>Su abuelo, ingeniero jubilado con dedos manchados de grasa y mente afilada como tijeras, fue su primer aliado. "Todo inventor empieza con un problema", le dijo mientras ajustaba sus lentes. "¿Cuál es tu problema?"</p><p>Valentina pensó tres días. Al cuarto, llegó corriendo al taller: "Los libros de la biblioteca pesan mucho. Los niños no pueden cargar todos los que quieren." El abuelo sonrió despacio, como quien acaba de ver salir el sol.</p><p>Pasaron julio entero diseñando. Agosto lo usaron en prototipos fallidos. Septiembre fue el mes de los ajustes y las frustraciones. Pero el primer día de octubre, Valentina presentó ante su escuela una mochila con ruedas inteligentes, ajustable, liviana.</p><p>No ganó ningún premio. Pero supo que podía crear cosas que antes no existían. Eso valía más que cualquier trofeo.</p>`,
+      comprension:["¿Qué decidió inventar Valentina ese verano?","¿Quién fue el primer aliado de Valentina?","¿Cuál fue el problema que identificó Valentina?","¿Cuándo presentó su invento Valentina?","¿Ganó algún premio Valentina?"],
+      reflexion:["¿Por qué crees que el abuelo dijo que todo inventor empieza con un problema?","¿Qué problema de tu escuela o comunidad resolverías tú?","¿Qué significa que no ganar un premio pero saber que puedes crear valga más que un trofeo?","¿Cuál fue la parte más importante del proceso de Valentina: el diseño, los fracasos o el resultado?","¿Qué invento te gustaría crear y por qué?"],
+      act1:{title:"Actividad 1 – Mi invento",desc:"Diseña (dibuja y describe) un invento que resuelva un problema real de tu escuela o comunidad. Explica cómo funciona."},
+      act2:{title:"Actividad 2 – El proceso",desc:"Escribe los pasos que seguirías para desarrollar tu invento, incluyendo los posibles fracasos y cómo los superarías."}},
+      {title:"Palabras que cruzan el océano",meta:"Novela (fragmento) • 9 min",text:`<p>Camila tenía dos vidas: la de México y la de los emails que le escribía a su prima Sandra, quien vivía en España desde hacía tres años.</p><p>Sus correos eran diferentes a los de sus compañeras. No hablaban de chicos ni de redes sociales. Hablaban de libros, de preguntas imposibles, de cómo el tiempo parece moverse diferente cuando extrañas a alguien.</p><p>"¿Crees que el idioma cambia la forma en que piensas?" le escribió Sandra un martes. Camila tardó dos días en responder: "Creo que sí. Cuando pienso en ti, solo lo hago en español. Como si algunos sentimientos no cupieran en otro idioma."</p><p>Ese intercambio se convirtió en un ensayo. El ensayo en un cuaderno. El cuaderno llegó, tres años después, a manos de una editorial pequeña que publicó sus cartas bajo el título "Lo que el océano no puede separar."</p><p>El día que vio el libro impreso, Camila llamó a Sandra. No dijeron nada. Solo respiraron juntas a través del teléfono, cada una en su continente, unidas por las palabras que habían aprendido a cuidar.</p>`,
+      comprension:["¿Con quién se comunicaba Camila regularmente?","¿De qué hablaban sus correos?","¿Qué pregunta le hizo Sandra a Camila?","¿Cómo se llamó el libro que publicaron?","¿Qué hicieron Camila y Sandra cuando vieron el libro?"],
+      reflexion:["¿Crees que el idioma afecta cómo pensamos y sentimos?","¿Tienes a alguien con quien intercambiás ideas importantes? ¿Quién es?","¿Qué título le pondrías a las cartas de tu vida?","¿Qué puede unir a personas separadas por la distancia?","¿Por qué crees que el libro se llama 'Lo que el océano no puede separar'?"],
+      act1:{title:"Actividad 1 – Carta al océano",desc:"Escribe una carta a alguien importante que está lejos de ti (puede ser imaginaria). Habla de algo profundo que quieras compartir."},
+      act2:{title:"Actividad 2 – Preguntas imposibles",desc:"Escribe 5 preguntas 'imposibles' sobre la vida, el tiempo o los sentimientos que te gustaría intercambiar con alguien."}},
+      {title:"El mapa de los miércoles",meta:"Novela (fragmento) • 8 min",text:`<p>Cada miércoles, Tomás dibujaba un mapa diferente. No de ciudades ni países: mapas de días. El miércoles de la discusión con su mejor amigo. El miércoles en que llovió durante nueve horas. El miércoles en que su abuela le enseñó a hacer tortillas.</p><p>Los mapas tenían calles con nombres de emociones: Avenida del Orgullo, Callejón del Arrepentimiento, Plaza de la Alegría Inesperada. Había monumentos a momentos pequeños que nadie más recordaba.</p><p>Su profesora de arte, al ver los mapas, organizó una exposición. La tituló: "Cartografía interior: los mundos de Tomás."</p><p>El día de la exposición, vino gente que Tomás nunca había visto. Una señora mayor se detuvo frente al mapa del miércoles lluvioso y lloró. "Este mapa es también mío", dijo. "Yo también he vivido este miércoles."</p><p>Tomás entendió ese día que lo más personal puede ser también lo más universal. Que los mapas de uno son, en el fondo, los mapas de todos.</p>`,
+      comprension:["¿Qué dibujaba Tomás cada miércoles?","¿Qué nombres tenían las calles en sus mapas?","¿Qué organizó la profesora de arte?","¿Por qué lloró la señora mayor?","¿Qué conclusión llegó Tomás al final?"],
+      reflexion:["¿Qué miércoles de tu vida dibujarías en un mapa?","¿Qué calle con nombre de emoción existiría en tu mapa?","¿Por qué crees que 'lo más personal puede ser lo más universal'?","¿Qué momentos pequeños de tu vida merecen un monumento?","¿Cómo te sentirías si alguien dijera que tu historia también es la suya?"],
+      act1:{title:"Actividad 1 – Mi mapa de un día",desc:"Dibuja el mapa de un día importante para ti. Incluye calles con nombres de emociones, monumentos a momentos y plazas de recuerdos."},
+      act2:{title:"Actividad 2 – Cartografía compartida",desc:"Comparte con un compañero tu mapa y explícale tres lugares importantes. Luego escribe qué descubriste que tienen en común."}},
+      {title:"La escuela de las segundas oportunidades",meta:"Novela (fragmento) • 8 min",text:`<p>La escuela no tenía nombre oficial. En el barrio la llamaban simplemente "la segunda". Era para estudiantes que habían reprobado, que habían dejado la escuela, que creían que ya no había lugar para ellos en ningún aula.</p><p>Renata llegó un lunes con los ojos bajos y la mochila a medias. El director, un hombre delgado con voz tranquila, la recibió con un café con leche y una sola pregunta: "¿Qué te gusta?"</p><p>Renata no supo qué responder. Hacía tanto que nadie le preguntaba eso. Dijo, casi en susurro: "Dibujar, creo." El director anotó algo y le señaló un salón lleno de colores.</p><p>Pasaron los meses. Renata dibujó murales en los pasillos, ilustró el periódico escolar, enseñó a otros estudiantes sus técnicas. Al final del año, cuando recibió su diploma, lo sostuvo con ambas manos, muy fuerte, como quien finalmente agarra algo que casi se le escapa.</p>`,
+      comprension:["¿Para quién era la escuela 'la segunda'?","¿Cómo recibió el director a Renata?","¿Qué le gustaba hacer a Renata?","¿Qué actividades realizó Renata durante el año?","¿Cómo sostuvo Renata su diploma?"],
+      reflexion:["¿Por qué crees que es importante tener segundas oportunidades?","¿Ha habido algo en tu vida en que hayas necesitado una segunda oportunidad?","¿Qué significa recibir el diploma 'como quien agarra algo que casi se le escapa'?","¿Qué le dirías a alguien que cree que ya no tiene lugar en la escuela?","¿Cuál es la diferencia entre una primera y una segunda oportunidad?"],
+      act1:{title:"Actividad 1 – Mi segunda oportunidad",desc:"Escribe sobre alguna situación en tu vida donde tuviste o necesitaste una segunda oportunidad. ¿Qué aprendiste de ella?"},
+      act2:{title:"Actividad 2 – Discurso de bienvenida",desc:"Escribe el discurso que daría el director de 'la segunda' para dar la bienvenida a nuevos estudiantes."}}
+    ],
+    fabulas:[
+      {title:"El águila y el caracol",meta:"Fábula • 3 min",text:`<p>Un águila sobrevolaba el valle cuando vio a un caracol subiendo lentamente por la roca más alta de la montaña.</p><p>"¿Qué haces, caracol? A ese ritmo jamás llegarás a la cima", dijo el águila con desdén.</p><p>"Llegaré", respondió el caracol sin detenerse.</p><p>"Yo puedo llegar en un segundo. ¿Para qué tanto esfuerzo?", preguntó el águila.</p><p>"Porque cuando yo llegue a la cima", dijo el caracol lentamente, "la cima sabrá que fui yo quien subió."</p><p>El águila, confundida, se fue volando. Al atardecer, regresó y vio al caracol en lo más alto, mirando el horizonte con una calma que el águila nunca había sentido en todos sus vuelos veloces.</p><p><em>Moraleja: La velocidad te lleva al destino, pero el esfuerzo te hace merecer la llegada.</em></p>`,
+      comprension:["¿Qué hacía el caracol cuando lo vio el águila?","¿Qué le dijo el águila al caracol?","¿Qué respondió el caracol?","¿Qué encontró el águila al regresar al atardecer?","¿Cuál es la moraleja?"],
+      reflexion:["¿Crees que el caracol tenía razón? ¿Por qué?","¿Hay algo en tu vida que estás logrando lentamente pero con esfuerzo?","¿Qué es más valioso: llegar rápido o llegar con esfuerzo?","¿Alguna vez te has burlado de alguien por ir más despacio que tú?","¿Qué aprendió el águila al final?"],
+      act1:{title:"Actividad 1 – Mi moraleja",desc:"Piensa en una situación de tu vida y escribe una fábula corta (10-15 líneas) con animales que ilustre esa situación, con su moraleja."},
+      act2:{title:"Actividad 2 – Debate de valores",desc:"¿Qué es mejor: la rapidez del águila o la perseverancia del caracol? Escribe un argumento de 10 líneas defendiendo tu postura."}},
+      {title:"El árbol que no quería hojas",meta:"Fábula • 3 min",text:`<p>Había un roble en el bosque que cada otoño se negaba a soltar sus hojas. Mientras los demás árboles las dejaban caer sin miedo, él las aferraba con toda su fuerza.</p><p>"Si suelto mis hojas, perderé lo que me hace hermoso", decía.</p><p>El invierno llegó y la nieve se acumuló en sus ramas repletas. El peso lo dobló tanto que una rama se rompió. La primavera llegó pero el roble, exhausto y herido, tardó meses en brotar.</p><p>El sauce, su vecino, le dijo: "El otoño no es pérdida. Es preparación. Si huberas soltado tus hojas, hoy tendrías ramas nuevas y más fuertes."</p><p>Ese otoño, el roble dejó caer cada hoja lentamente, sin tristeza. Y cuando llegó la primavera, floreció más abundante que nunca.</p><p><em>Moraleja: A veces hay que soltar lo viejo para crecer de nuevo.</em></p>`,
+      comprension:["¿Por qué el roble no quería soltar sus hojas?","¿Qué le pasó al roble en el invierno?","¿Qué le dijo el sauce al roble?","¿Qué hizo el roble el siguiente otoño?","¿Cuál es la moraleja?"],
+      reflexion:["¿Qué cosas de tu vida has tenido que 'soltar' para crecer?","¿Por qué es difícil dejar ir algo que consideramos parte de nosotros?","¿Conoces a alguien que, como el roble, se aferra demasiado al pasado?","¿Qué significa que el otoño es 'preparación, no pérdida'?","¿Qué 'hojas' necesitas soltar tú para crecer?"],
+      act1:{title:"Actividad 1 – Lo que necesito soltar",desc:"Escribe sobre algo que necesitas dejar ir para crecer. Puede ser un hábito, un miedo o una situación pasada."},
+      act2:{title:"Actividad 2 – Carta del roble al sauce",desc:"Escribe la carta que el roble le escribiría al sauce al año siguiente para agradecerle su consejo."}},
+      {title:"La hormiga y el diamante",meta:"Fábula • 3 min",text:`<p>Una hormiga encontró un diamante en el camino. Era enorme, brillante, imposible de cargar.</p><p>"Este tesoro es mío", pensó, y empezó a empujarlo. Pero el diamante no se movía.</p><p>Pasó un grillo: "Déjalo. Es demasiado para ti." La hormiga no escuchó.</p><p>Pasó una mariposa: "¿Para qué lo quieres? No puedes comerlo ni usarlo." La hormiga siguió intentando.</p><p>Al tercer día, llegaron cien hormigas más del hormiguero. Preguntaron: "¿Qué haces?"</p><p>"Muevo este diamante." Las otras hormigras se miraron, luego pusieron todas sus fuerzas y el diamante llegó al hormiguero.</p><p>La hormiga entendió entonces que el verdadero tesoro no era el diamante, sino saber cuándo pedir ayuda.</p><p><em>Moraleja: El trabajo en equipo mueve lo que el esfuerzo individual no puede.</em></p>`,
+      comprension:["¿Qué encontró la hormiga en el camino?","¿Qué le dijo el grillo?","¿Cuántos días estuvo la hormiga intentando mover el diamante?","¿Cómo llegó el diamante al hormiguero?","¿Cuál fue el verdadero tesoro que descubrió la hormiga?"],
+      reflexion:["¿Hay algo que hayas intentado hacer solo cuando necesitabas ayuda?","¿Por qué crees que la hormiga no pedía ayuda al principio?","¿En qué situaciones es importante pedir ayuda?","¿Qué piensas de la frase 'saber cuándo pedir ayuda'?","¿Cómo se siente recibir ayuda cuando más la necesitas?"],
+      act1:{title:"Actividad 1 – Mi diamante",desc:"Describe un 'diamante' en tu vida: algo que quieres lograr pero que necesitas ayuda para conseguir. ¿A quién pedirías ayuda?"},
+      act2:{title:"Actividad 2 – Proyecto de equipo",desc:"Diseña un proyecto escolar o comunitario que solo pueda lograrse trabajando en equipo. Describe los roles de cada integrante."}},
+      {title:"El lobo que aprendió a escuchar",meta:"Fábula • 4 min",text:`<p>Había un lobo conocido en todo el bosque por sus aullidos: largos, fuertes, incansables. Aullaba al amanecer, al mediodía, al anochecer.</p><p>"Nadie me escucha", se quejaba. Y aullaba más fuerte.</p><p>Un día, un búho anciano lo detuvo: "Llevas años hablando. ¿Cuántas veces has escuchado?"</p><p>El lobo se quedó quieto. No supo qué responder.</p><p>"Prueba esto: mañana, en lugar de aullar, escucha los sonidos del bosque."</p><p>El lobo obedeció. Escuchó el viento entre los pinos. El arroyo contando historias. El ciervo caminando con cuidado. Al atardecer, sintió algo extraño en el pecho: paz.</p><p>Esa noche aulló una sola vez, suavemente, como respuesta al bosque. Y por primera vez, el bosque le respondió.</p><p><em>Moraleja: Para ser escuchado, primero hay que aprender a escuchar.</em></p>`,
+      comprension:["¿Por qué era famoso el lobo?","¿Qué se quejaba el lobo?","¿Qué consejo le dio el búho?","¿Qué escuchó el lobo al día siguiente?","¿Qué pasó cuando el lobo aulló suavemente esa noche?"],
+      reflexion:["¿Crees que eres bueno para escuchar a los demás?","¿Conoces a alguien que habla mucho pero escucha poco?","¿Cuál es la diferencia entre oír y escuchar?","¿Por qué crees que el bosque le respondió cuando el lobo aulló suavemente?","¿Qué cambiarías en tus conversaciones para escuchar mejor?"],
+      act1:{title:"Actividad 1 – Ejercicio de escucha",desc:"Durante un día, pon especial atención en escuchar a las personas que te hablan. Anota en un párrafo lo que descubriste."},
+      act2:{title:"Actividad 2 – Diálogo del bosque",desc:"Escribe un diálogo entre el lobo y el arroyo, donde el lobo practica escuchar y el arroyo le cuenta una historia importante."}},
+      {title:"El pez que soñaba con volar",meta:"Fábula • 3 min",text:`<p>En el río más transparente del mundo vivía un pez llamado Nilo. Pasaba sus días observando los pájaros desde abajo, con envidia. Quería volar.</p><p>"Yo podría hacerlo si tuviera alas", decía a sus amigos peces. Ellos lo miraban con preocupación.</p><p>Un día, Nilo saltó del agua intentando volar. Cayó de golpe. Lo intentó cien veces más. Cien caídas.</p><p>Una garza lo observaba. Finalmente habló: "¿Por qué quieres volar?"</p><p>"Para ver el mundo desde arriba", dijo Nilo.</p><p>"¿Sabes que yo nunca he visto lo que tú ves desde abajo? Los corales, la luz que filtra el agua, los peces de colores. Yo nunca podré ver eso."</p><p>Nilo se sumergió y miró su mundo como si fuera la primera vez. Era el único que podía verlo así.</p><p><em>Moraleja: El lugar donde estás tiene una vista que solo tú puedes apreciar.</em></p>`,
+      comprension:["¿Qué quería hacer el pez Nilo?","¿Cuántas veces intentó Nilo saltar?","¿Quién le habló a Nilo?","¿Qué dijo la garza que nunca había podido ver?","¿Cuál es la moraleja?"],
+      reflexion:["¿Has deseado alguna vez tener lo que otro tiene?","¿Qué tiene tu vida que otros quizás envidiarían?","¿Por qué crees que siempre queremos lo que no tenemos?","¿Qué significa apreciar el lugar donde estás?","¿Qué cambió en Nilo al final del cuento?"],
+      act1:{title:"Actividad 1 – Mi vista única",desc:"Escribe sobre tres cosas de tu vida que son únicas y valiosas, que otros quizás no tienen o no aprecian."},
+      act2:{title:"Actividad 2 – El pez y la garza",desc:"Escribe una continuación de la fábula donde Nilo y la garza intercambian sus mundos por un día. ¿Qué descubren?"}}
+    ],
+    mitos:[
+      {title:"El origen del arcoíris",meta:"Mito • 4 min",text:`<p>Cuando el mundo era joven, los dioses del cielo y de la tierra vivían separados por una oscuridad eterna. Ni la luz ni el color podían cruzar ese abismo.</p><p>Xochitl, la diosa de las flores, amaba tanto la tierra que lloró durante siete días. Sus lágrimas cayeron al cielo y se mezclaron con los rayos del sol.</p><p>Itzal, el dios de la sombra, vio la mezcla de luz y agua y sintió algo nuevo: curiosidad. Por primera vez, quiso acercarse a algo que no era oscuridad.</p><p>Cuando Xochitl y la luz del sol se tocaron, nació el arcoíris: el puente entre el cielo lluvioso y la tierra soleada, entre lo que llora y lo que brilla.</p><p>Desde entonces, cada vez que llueve y brilla el sol al mismo tiempo, los antiguos decían que Xochitl volvía a llorar de alegría por tener un puente hacia la tierra que tanto amaba.</p>`,
+      comprension:["¿Cómo vivían los dioses al principio?","¿Quién era Xochitl?","¿Cuántos días lloró Xochitl?","¿Qué sintió Itzal al ver la mezcla de luz y agua?","¿Qué representa el arcoíris según este mito?"],
+      reflexion:["¿Por qué crees que las culturas antiguas inventaban mitos para explicar la naturaleza?","¿Qué fenómeno natural explicarías tú con un mito?","¿Qué simboliza el arcoíris en tu cultura?","¿Qué te dice sobre las emociones el hecho de que el arcoíris nazca de lágrimas y sol?","¿Qué crees que representa Itzal en este mito?"],
+      act1:{title:"Actividad 1 – Mi mito de la naturaleza",desc:"Inventa un mito que explique un fenómeno natural (el trueno, la luna, las estrellas, el viento). Debe tener personajes divinos y una historia."},
+      act2:{title:"Actividad 2 – Comparación cultural",desc:"Busca cómo otra cultura explica el arcoíris y compara esa historia con la del mito que acabas de leer. ¿Qué tienen en común?"}},
+      {title:"La primera música del mundo",meta:"Mito • 4 min",text:`<p>Al principio, el mundo era silencio. Los animales se movían, el viento soplaba, el agua corría, pero todo ocurría en un silencio absoluto que pesaba como piedra.</p><p>El dios Tonátl observaba su creación con tristeza. Había hecho todo perfecto, pero faltaba algo que no sabía nombrar.</p><p>Una niña pequeña, hija de un campesino, un día tomó un tallo de bambú hueco y sopló a través de él. Salió un sonido. Luego otro. Tonátl se detuvo en el cielo.</p><p>La niña no sabía que estaba creando música. Solo sabía que algo dentro de ella necesitaba salir. Sopló y sopló hasta que el valle entero resonó.</p><p>Tonátl bajó del cielo y se sentó junto a la niña. "¿Cómo lo hiciste?" preguntó. La niña lo miró sin entender la pregunta. "Solo soplé", respondió.</p><p>Desde ese día, Tonátl enseñó a todos los seres la música. Pero siempre recordó que no fue él quien la inventó. Fue una niña que simplemente necesitaba expresar algo.</p>`,
+      comprension:["¿Cómo era el mundo al principio según este mito?","¿Cómo se sentía el dios Tonátl?","¿Qué usó la niña para crear música?","¿Qué preguntó Tonátl a la niña?","¿Qué conclusión recordó siempre Tonátl?"],
+      reflexion:["¿Crees que el arte y la música nacen de una necesidad interior? ¿Por qué?","¿Qué instrumento o forma de expresión elegiría tu alma?","¿Qué significa que algo tan poderoso como la música lo inventó alguien que 'solo necesitaba expresar algo'?","¿Qué crearías tú si el mundo aún no tuviera esa cosa?","¿Qué siente el cuerpo cuando escucha música?"],
+      act1:{title:"Actividad 1 – El mito de mi arte",desc:"Escribe un mito que explique cómo nació tu forma de expresión favorita (el baile, la pintura, la escritura, el deporte)."},
+      act2:{title:"Actividad 2 – Sonido de emociones",desc:"Asigna un sonido, instrumento o tipo de música a cada emoción básica (alegría, tristeza, miedo, enojo, amor). Explica por qué."}},
+      {title:"Los guardianes del tiempo",meta:"Mito • 5 min",text:`<p>Antes de que los relojes existieran, el tiempo era guardado por cuatro serpientes gigantes: una para cada estación. Vivían bajo la tierra y se turnaban para salir.</p><p>Primavera era verde y ágil. Verano era dorada y pesada. Otoño era rojiza y sabia. Invierno era blanca y silenciosa.</p><p>Un año, Verano no quiso regresar bajo tierra. "Me gusta el calor y la luz. No quiero ir al oscuro", dijo.</p><p>La tierra empezó a secarse. Los ríos bajaron. Los animales sufrían. Finalmente, Otoño fue a hablar con ella: "Hermana, cada una de nosotras es necesaria. Sin mí, no habrá colores. Sin Invierno, no habrá descanso. Sin Primavera, no habrá nuevo comienzo."</p><p>Verano escuchó y bajó lentamente. La tierra suspiró de alivio. Y el ciclo continuó, como siempre, como debe ser.</p>`,
+      comprension:["¿Quiénes guardaban el tiempo antes de los relojes?","¿Cómo eran las cuatro serpientes?","¿Por qué no quería Verano regresar?","¿Qué le pasó a la tierra mientras Verano no regresaba?","¿Qué argumento usó Otoño para convencer a Verano?"],
+      reflexion:["¿Qué estación del año te representa más? ¿Por qué?","¿Qué consecuencias tiene cuando algo que debe cambiar no cambia?","¿Conoces situaciones en las que el egoísmo de uno afecta a todos?","¿Qué significa que 'cada una de nosotras es necesaria'?","¿Qué aprendiste sobre los ciclos naturales con este mito?"],
+      act1:{title:"Actividad 1 – Mi serpiente de las estaciones",desc:"Dibuja o describe tu propia serpiente de las estaciones: ¿cómo sería? ¿Qué poderes tendría? ¿Qué representaría?"},
+      act2:{title:"Actividad 2 – El discurso de Otoño",desc:"Reescribe el discurso de Otoño a Verano haciéndolo más elaborado y poético. Debe convencer con argumentos emocionales y racionales."}},
+      {title:"El dios que robó el fuego para los peces",meta:"Mito • 4 min",text:`<p>Cuando los mares eran jóvenes, los peces vivían en oscuridad y frío. El fuego era propiedad exclusiva de los seres de tierra y el gran dios Kalún lo guardaba celosamente.</p><p>Nayar, un dios menor con forma de delfín, observaba a los peces sufrir. Una noche, salió del mar, se transformó en hombre y subió la montaña sagrada donde ardía el fuego eterno.</p><p>Tomó una chispa en sus manos. Quemaba. Corrió hacia el mar. Al tocar el agua, la chispa se transformó: no era fuego lo que llegó al océano, sino luz. La bioluminiscencia que hoy vemos en el mar de noche.</p><p>Kalún, furioso, condenó a Nayar a vivir entre dos mundos: ni completamente del mar ni completamente de la tierra. Por eso los delfines nadan pero respiran aire.</p><p>Los peces recibieron su regalo de luz. Y Nayar, aunque castigado, siempre nada con una sonrisa.</p>`,
+      comprension:["¿Qué tenían los peces antes de que Nayar actuara?","¿En qué se transformó Nayar?","¿Qué pasó con la chispa al tocar el agua?","¿Cómo castigó Kalún a Nayar?","¿Cuál es el fenómeno natural que explica este mito?"],
+      reflexion:["¿Vale la pena ser castigado por ayudar a otros? ¿Por qué?","¿Conoces a alguien que haya sacrificado algo por los demás?","¿Cómo ves que este mito explica la bioluminiscencia del mar?","¿Qué dice el mito sobre la justicia de Kalún? ¿Es justa?","¿Qué harías tú si tuvieras que elegir entre obedecer las reglas y ayudar a alguien?"],
+      act1:{title:"Actividad 1 – El héroe sacrificado",desc:"Escribe un mito donde un ser divino hace un sacrificio para ayudar a otros. ¿Cómo lo castigarán? ¿Tiene arrepentimiento?"},
+      act2:{title:"Actividad 2 – Fenómeno explicado",desc:"Elige un fenómeno de la naturaleza y escribe un mito de 15 líneas que lo explique, con dioses, héroes o criaturas míticas."}},
+      {title:"La montaña que aprendió a caminar",meta:"Mito • 4 min",text:`<p>En los tiempos en que la tierra aún era blanda como arcilla, las montañas podían moverse. Una de ellas, llamada Tepec, quería ver el mar.</p><p>Cada noche caminaba un poco. El suelo temblaba, los ríos cambiaban de curso, los animales corrían sin entender por qué la tierra se movía.</p><p>Los dioses se reunieron, alarmados. "Si Tepec llega al mar, el mundo perderá su forma", dijeron.</p><p>Enviaron a la diosa Itzel a detenerla. Itzel no usó fuerza: se sentó en la cima de Tepec y le habló toda la noche, contándole historias del mar, de sus colores, de sus criaturas, de sus mareas.</p><p>Al amanecer, Tepec ya no quería moverse. "Si ya conozco el mar por tus palabras", dijo, "no necesito ir." Los dioses, agradecidos, convirtieron a Itzel en el sol que cada mañana sale del mar, trayendo historias a las montañas.</p>`,
+      comprension:["¿Qué quería ver Tepec?","¿Qué pasaba mientras Tepec caminaba?","¿Por qué se alarmaron los dioses?","¿Cómo detuvo Itzel a la montaña?","¿En qué se convirtió Itzel?"],
+      reflexion:["¿Crees que las palabras pueden tener más poder que la fuerza? ¿Por qué?","¿Qué simboliza la montaña que quiere moverse?","¿Hay algo en tu vida que deseas ver y no puedes? ¿Cómo lo manejas?","¿Qué te dice este mito sobre el poder de las historias?","¿Cómo te imaginas el diálogo entre Itzel y Tepec esa noche?"],
+      act1:{title:"Actividad 1 – Las historias del sol",desc:"Escribe tres historias del mar que Itzel le podría contar a Tepec cada mañana. Deben ser poéticas y detalladas."},
+      act2:{title:"Actividad 2 – El mito de algo inmóvil",desc:"Elige algo que no se mueve (una piedra, un lago, un desierto) e inventa el mito que explica por qué quedó quieto."}}
+    ],
+    leyendas:[
+      {title:"La campana que toca sola",meta:"Leyenda • 5 min",text:`<p>En el pueblo de Santa Cruz, la vieja iglesia tiene una campana que ningún sacristán toca. Y sin embargo, cada primer domingo de noviembre, a las tres de la mañana, la campana suena sola.</p><p>Los ancianos del pueblo cuentan que hace doscientos años, un sacristán llamado Félix tocaba las campanas con tal devoción que los muertos, dicen, salían de sus tumbas a escucharlo.</p><p>Una noche de noviembre, Félix subió al campanario por última vez. Su corazón era viejo y sus manos ya temblaban. Tocó las campanas toda la noche, llorando, sabiendo que era la última vez.</p><p>Murió al amanecer, con las cuerdas aún en sus manos.</p><p>Desde entonces, la gente dice que cada año Félix vuelve a cumplir su promesa. Que el alma de alguien tan devoto no puede quedarse quieta cuando llega el día de sus muertos.</p><p>Nadie sube al campanario ese noche. Pero todos escuchan. Y todos sienten que algo viejo y verdadero les habla desde arriba.</p>`,
+      comprension:["¿En qué pueblo se escucha la campana?","¿Cuándo suena la campana sola?","¿Quién era Félix?","¿Cómo murió Félix?","¿Por qué regresa Félix según la leyenda?"],
+      reflexion:["¿Crees en las leyendas de tu pueblo o ciudad? ¿Por qué?","¿Conoces alguna leyenda local? ¿Cuál es?","¿Qué dice esta leyenda sobre la devoción y la muerte?","¿Qué significa que 'algo viejo y verdadero les habla'?","¿Qué emoción te genera leer esta leyenda?"],
+      act1:{title:"Actividad 1 – La leyenda de mi pueblo",desc:"Escribe o inventa una leyenda basada en un lugar real de tu ciudad o comunidad. Debe incluir un personaje histórico o imaginario."},
+      act2:{title:"Actividad 2 – Continuación",desc:"Escribe qué pasaría si alguien decidiera subir al campanario ese noche. ¿Qué encontraría? ¿Qué ocurriría?"}},
+      {title:"El niño del puente roto",meta:"Leyenda • 5 min",text:`<p>En las noches de lluvia fuerte, los habitantes del barrio viejo evitan cruzar el puente de piedra. Dicen que un niño de ropa empapada camina en él.</p><p>La leyenda nació hace cien años. Un niño de diez años, hijo de una lavandera, cruzaba el puente cada tarde para llevar ropa limpia a las casas del otro lado.</p><p>Una noche de tormenta, el río creció y el puente se rompió. El niño nunca llegó al otro lado.</p><p>Su madre lo buscó durante años. Se dice que al morir, ella también se quedó buscando. Y que el niño, sin saber que ya no está, sigue caminando el puente cada noche de lluvia, esperando cruzar, esperando llegar.</p><p>Los que lo han visto dicen que no da miedo. Que se ve concentrado, con su canasta al brazo, mirando al frente. Que si lo llamas, voltea, sonríe, y desaparece.</p>`,
+      comprension:["¿Cuándo aparece el niño en el puente?","¿Quién era el niño y qué hacía?","¿Qué pasó la noche de la tormenta?","¿Qué hizo la madre del niño?","¿Cómo describen al niño quienes lo han visto?"],
+      reflexion:["¿Qué te hace sentir esta leyenda: miedo, tristeza, algo más?","¿Crees que los espíritus pueden quedar atrapados en rutinas del pasado?","¿Qué dice esta leyenda sobre el amor de una madre?","¿Conoces historias similares en tu comunidad?","¿Qué harías si vieras al niño en el puente?"],
+      act1:{title:"Actividad 1 – El testigo",desc:"Escribe el testimonio de alguien que dice haber visto al niño en el puente. Debe ser en primera persona, detallado y creíble."},
+      act2:{title:"Actividad 2 – La madre y el río",desc:"Escribe un poema o texto poético desde la perspectiva de la madre mientras busca a su hijo junto al río."}},
+      {title:"La casa de los espejos ciegos",meta:"Leyenda • 5 min",text:`<p>En la calle Olmos número 17, hay una casa abandonada donde todos los espejos están tapados con tela negra. La gente dice que los taparon hace cincuenta años porque los espejos "veían demasiado".</p><p>Cuenta la leyenda que en esa casa vivía una familia que nunca salía. Los vecinos solo los veían en las ventanas, siempre mirando hacia afuera, nunca hablando.</p><p>Una noche, una vecina escuchó gritos desde la casa. Al amanecer, todo estaba en silencio. Nadie volvió a ver a la familia. Pero desde esa noche, quienes se asomaban a los espejos de la casa veían reflejados no su propio rostro, sino el de alguien que lloraba.</p><p>La municipalidad tapó los espejos. La casa sigue en pie, cerrada. Nadie la compra, nadie la renta.</p><p>Los niños del barrio juran que si te paras frente a la casa un viernes por la noche, puedes escuchar, desde adentro, el sonido de vidrio rompiéndose suavemente.</p>`,
+      comprension:["¿En qué calle está la casa?","¿Por qué taparon los espejos?","¿Qué vio la familia siempre?","¿Qué se veía en los espejos después de esa noche?","¿Qué escuchan los niños del barrio frente a la casa?"],
+      reflexion:["¿Qué te genera leer sobre lugares abandonados con historia?","¿Qué podría representar simbólicamente un espejo que 've demasiado'?","¿Crees que los lugares guardan la energía de lo que ocurrió en ellos?","¿Conoces algún lugar en tu ciudad con fama de 'embrujado'?","¿Qué harías si te invitaran a pasar la noche en esa casa?"],
+      act1:{title:"Actividad 1 – El investigador",desc:"Escribe el informe de un investigador que entra a la casa de los espejos ciegos. ¿Qué encuentra? ¿Qué descubre sobre la familia?"},
+      act2:{title:"Actividad 2 – Historia de la familia",desc:"Inventa la historia completa de la familia que vivía en la casa. ¿Quiénes eran? ¿Qué les pasó esa noche?"}},
+      {title:"El árbol que guarda nombres",meta:"Leyenda • 4 min",text:`<p>Al norte del parque central hay un ahuehuete enorme de más de trescientos años. En su tronco, si miras de cerca con la luz correcta, puedes ver marcas que parecen letras.</p><p>La leyenda dice que el árbol guarda los nombres de todos los que le hablaron alguna vez. No de los que los tallaron con cuchillo, sino de los que se acercaron y susurraron algo verdadero.</p><p>Se dice que una maestra del siglo pasado, al quedarse sin palabras para explicarle a sus alumnos el valor de la honestidad, los llevó al árbol y les dijo: "Díganle al árbol algo que nunca le han dicho a nadie."</p><p>Los niños se acercaron uno a uno y susurraron. Cuando terminaron, la maestra señaló las marcas en el tronco: "El árbol los escuchó. Y nunca olvidará."</p><p>Desde entonces, hay familias enteras que llevan a sus hijos al árbol en momentos importantes: antes de un examen, antes de irse lejos, antes de perdonar a alguien.</p>`,
+      comprension:["¿Dónde está el árbol de la leyenda?","¿Qué guarda el árbol según la leyenda?","¿Por qué llevó la maestra a sus alumnos al árbol?","¿Qué hicieron los niños frente al árbol?","¿Para qué llevan las familias a sus hijos al árbol hoy?"],
+      reflexion:["¿Qué le susurrarías tú al árbol?","¿Por qué crees que la maestra eligió este método para enseñar la honestidad?","¿Hay algún lugar en tu vida donde guardes secretos o pensamientos importantes?","¿Qué significa que el árbol 'nunca olvidará'?","¿Qué momentos importantes de tu vida merecerían una visita al árbol?"],
+      act1:{title:"Actividad 1 – Mi susurro al árbol",desc:"Escribe lo que le susurrarías al árbol: algo que nunca le has dicho a nadie. Puede ser un miedo, un deseo o una verdad."},
+      act2:{title:"Actividad 2 – El árbol de mi escuela",desc:"Imagina que tu escuela tiene un árbol que guarda nombres. Escribe una historia corta sobre un estudiante que le habla al árbol en un momento difícil."}},
+      {title:"La mujer de las velas amarillas",meta:"Leyenda • 5 min",text:`<p>Los pescadores del puerto viejo conocen a la mujer de las velas amarillas. Dicen que aparece en la orilla cuando hay tormenta, con una vela en cada mano, caminando hacia el mar.</p><p>La leyenda cuenta que fue la esposa de un capitán que murió en un naufragio. Ella esperó durante treinta años en la orilla, cada noche con velas amarillas para que su esposo encontrara el camino de regreso.</p><p>Murió esperando. Pero su espera no terminó.</p><p>Los pescadores que la han visto dicen que no da miedo. Que camina despacio, con dignidad, como quien tiene todo el tiempo del mundo. Que las velas nunca se apagan aunque sople el viento más fuerte.</p><p>Algunos dicen que cuando los barcos están en peligro, la luz amarilla los guía a la orilla. Que la mujer que esperó tanto tiempo aprendió a guiar a los que se pierden.</p>`,
+      comprension:["¿Cuándo aparece la mujer de las velas amarillas?","¿Qué llevaba la mujer en sus manos?","¿Cuánto tiempo esperó a su esposo?","¿Cómo caminaba la mujer según los pescadores?","¿Qué hace la mujer con los barcos en peligro?"],
+      reflexion:["¿Qué piensas sobre la lealtad que muestra esta mujer?","¿Hay algo por lo que esperarías treinta años?","¿Cómo transforma esta leyenda el dolor de la espera en algo hermoso?","¿Qué dice esta historia sobre el amor después de la muerte?","¿Cómo te hace sentir que su espera se convirtió en guía para otros?"],
+      act1:{title:"Actividad 1 – La carta del capitán",desc:"Escribe la carta que el capitán le enviaría a su esposa desde el mar, explicándole por qué no puede regresar."},
+      act2:{title:"Actividad 2 – Nueva leyenda",desc:"Crea una nueva leyenda inspirada en alguien que espera a otro. Cambia el contexto: puede ser en una montaña, un desierto, una ciudad."}}
+    ],
+    poemas:[
+      {title:"Las manos del tiempo",meta:"Poema • 3 min",text:`<p><em>Las manos del tiempo</em></p>
+<p>El tiempo tiene manos invisibles<br>que mueven todo sin que lo veamos:<br>las hojas que caen, las palabras que damos,<br>los sueños que un día dejamos de soñar.</p>
+<p>Tiene dedos de agua que moldean la roca,<br>palmas de viento que borran las huellas,<br>uñas de luz que rasgan la noche<br>para que el alba entre sin pedir permiso.</p>
+<p>Y aunque no podemos verlo ni tocarlo,<br>lo sentimos en el espejo cada mañana,<br>en la voz de la abuela que se vuelve más suave,<br>en las fotos que amarillean en la caja olvidada.</p>
+<p>El tiempo no roba ni destruye:<br>simplemente transforma lo que toca.<br>Y nosotros, arcilla de sus manos invisibles,<br>vamos siendo, sin saberlo, lo que somos.</p>`,
+      comprension:["¿Qué imagen usa el poeta para describir el tiempo?","¿Qué hacen los 'dedos de agua' del tiempo?","¿Dónde sentimos al tiempo según el poema?","¿Qué dice el poema que hace el tiempo?","¿Cuál es la última metáfora del poema?"],
+      reflexion:["¿Cómo describes tú el paso del tiempo en tu vida?","¿Cuál de las imágenes del poema te impactó más? ¿Por qué?","¿Estás de acuerdo en que el tiempo transforma en lugar de destruir?","¿Qué significa ser 'arcilla de las manos invisibles'?","¿Qué imagen usarías tú para describir el tiempo?"],
+      act1:{title:"Actividad 1 – Mi imagen del tiempo",desc:"Escribe un poema corto (8-12 versos) usando una imagen diferente para el tiempo. Puede ser un animal, un instrumento, un color."},
+      act2:{title:"Actividad 2 – Análisis poético",desc:"Identifica en el poema: 3 metáforas, 2 imágenes sensoriales y 1 idea central. Explica cada elemento con tus propias palabras."}},
+      {title:"Geografía del miedo",meta:"Poema • 3 min",text:`<p><em>Geografía del miedo</em></p>
+<p>El miedo vive en lugares precisos:<br>en el último escalón de la escalera oscura,<br>en el momento entre dormirse y soñar,<br>en la pausa antes de la respuesta esperada.</p>
+<p>Tiene su propio clima:<br>llueve cuando te esperan demasiado,<br>hay tormenta cuando caminas solo de noche,<br>y nieva, extrañamente, cuando hablas en público.</p>
+<p>Sus habitantes somos todos:<br>el valiente que tiembla por dentro,<br>el cobarde que no lo sabe,<br>y el que aprendió a vivir con él como vecino.</p>
+<p>Yo conozco su dirección exacta:<br>vive entre el pecho y la garganta,<br>ocupa el espacio de dos respiraciones,<br>y a veces, si lo escuchas bien,<br>solo quiere avisarte de algo.</p>`,
+      comprension:["¿Dónde vive el miedo según el poema?","¿Cómo describe el clima del miedo?","¿Quiénes son los 'habitantes' del miedo?","¿Cuál es la dirección exacta del miedo según el poeta?","¿Qué quiere el miedo a veces según el último verso?"],
+      reflexion:["¿En qué lugares específicos de tu vida vive el miedo?","¿Crees que el miedo puede ser útil? ¿Por qué?","¿Qué significa que el valiente 'tiembla por dentro'?","¿Has tenido la experiencia de que el miedo te estaba 'avisando de algo'?","¿Cómo puedes 'vivir con el miedo como vecino'?"],
+      act1:{title:"Actividad 1 – Mi geografía",desc:"Escribe un poema corto sobre la geografía de otra emoción (la alegría, la tristeza, el amor, la vergüenza). Usa lugares y clima."},
+      act2:{title:"Actividad 2 – Carta al miedo",desc:"Escribe una carta a tu miedo más grande. Cuéntale dónde vive en ti, qué te ha enseñado y cómo piensas tratarlo de ahora en adelante."}},
+      {title:"Oda a los zapatos viejos",meta:"Poema • 3 min",text:`<p><em>Oda a los zapatos viejos</em></p>
+<p>Mis zapatos viejos conocen<br>cada calle que he pisado,<br>cada charco que evité o no,<br>cada umbral que dudé en cruzar.</p>
+<p>Guardan en sus arrugas<br>el polvo de tres ciudades,<br>el barro de un camino que no estaba en el mapa,<br>y la huella invisible de alguien que ya no está.</p>
+<p>No son elegantes. Son honestos.<br>No brillan. Pero caminan.<br>Conocen el peso exacto de mis días,<br>la cadencia de mis pasos cuando tengo miedo,<br>el ritmo cuando todo va bien.</p>
+<p>Guardarlos cuando ya no sirven<br>se siente como despedirse de alguien<br>que supo dónde estuviste<br>sin necesitar que se lo dijeras.</p>`,
+      comprension:["¿Qué guardan los zapatos en sus arrugas?","¿Cómo describe el poeta sus zapatos?","¿Qué conocen los zapatos del poeta?","¿A qué compara el poeta guardar los zapatos viejos?","¿Qué dice el poema que los zapatos saben sin que nadie se los diga?"],
+      reflexion:["¿Tienes algún objeto viejo al que le tienes cariño especial? ¿Cuál es?","¿Por qué crees que los objetos guardan memorias para nosotros?","¿Qué diferencia hay entre algo 'elegante' y algo 'honesto' según el poema?","¿Qué objeto de tu vida podría ser tema de una oda?","¿Qué dice este poema sobre el valor de las cosas simples?"],
+      act1:{title:"Actividad 1 – Mi oda",desc:"Escribe una oda a un objeto cotidiano que sea importante para ti (tu mochila, tu cuaderno, tu instrumento, etc.)"},
+      act2:{title:"Actividad 2 – El inventario del objeto",desc:"Describe un objeto viejo e importante para ti: qué ha visto, adónde ha ido, qué ha guardado. Escríbelo como si el objeto hablara."}},
+      {title:"Autorretrato a los trece años",meta:"Poema • 3 min",text:`<p><em>Autorretrato a los trece años</em></p>
+<p>Tengo trece años y un universo<br>que cabe apenas en mi cuarto.<br>Tengo preguntas que no caben en el cuaderno<br>y respuestas que todavía no invento.</p>
+<p>Soy el que escucha música muy fuerte<br>cuando el silencio pesa demasiado.<br>Soy el que mira hacia afuera en clase<br>no porque me aburra sino porque el cielo<br>hace preguntas que el libro no hace.</p>
+<p>Tengo amigos que son la evidencia<br>de que algo en el mundo funciona bien.<br>Tengo miedos con nombre y sin nombre.<br>Tengo sueños que cambio cada semana.</p>
+<p>No sé quién seré a los veinte.<br>Pero hoy, a los trece,<br>soy exactamente lo que necesito ser:<br>alguien que todavía está aprendiendo<br>a deletrear su propio nombre.</p>`,
+      comprension:["¿Cómo describe el poeta su universo?","¿Por qué el poeta mira hacia afuera en clase?","¿Qué representan sus amigos para él?","¿Qué dice el poeta sobre sus sueños?","¿Cómo termina el poema?"],
+      reflexion:["¿Te identificas con el autorretrato del poema? ¿En qué partes?","¿Cómo escribirías tu propio autorretrato en este momento de tu vida?","¿Qué significa 'aprender a deletrear tu propio nombre'?","¿Qué parte del poema describe mejor cómo te sientes tú?","¿Qué agregarías o cambiarías al autorretrato?"],
+      act1:{title:"Actividad 1 – Mi autorretrato",desc:"Escribe tu propio autorretrato en forma de poema. Usa 'Soy el/la que...', 'Tengo...', 'No sé...', 'Pero hoy...' como guías."},
+      act2:{title:"Actividad 2 – El retrato en palabras",desc:"Describe a alguien importante de tu vida en forma poética, sin decir su nombre. Que quien lo lea pueda adivinar quién es."}},
+      {title:"El idioma de la lluvia",meta:"Poema • 3 min",text:`<p><em>El idioma de la lluvia</em></p>
+<p>La lluvia habla un idioma que aprendemos de niños<br>y olvidamos cuando crecemos:<br>el de quedarse adentro,<br>el de no tener que ir a ningún lado,<br>el de que el mundo puede esperar.</p>
+<p>Dice cosas distintas según cómo cae:<br>la lluvia fina dice que todo está bien,<br>la lluvia fuerte dice que algo debe cambiar,<br>la lluvia de medianoche no dice nada:<br>solo acompaña.</p>
+<p>Yo aprendí a escucharla de mi madre<br>que abría la ventana cuando llovía<br>y se quedaba mirando sin decir nada.<br>Aprendí que hay cosas que se sienten<br>mejor en silencio y bajo la lluvia.</p>
+<p>Hoy que llueve, abro la ventana.<br>Recuerdo a mi madre.<br>Y entiendo que hay idiomas<br>que no se aprenden en la escuela.</p>`,
+      comprension:["¿Qué idioma dice el poeta que aprendemos de niños?","¿Qué dice cada tipo de lluvia según el poema?","¿De quién aprendió el poeta a escuchar la lluvia?","¿Qué hacía la madre cuando llovía?","¿Qué concluye el poeta al final?"],
+      reflexion:["¿Tienes una relación especial con algún fenómeno del tiempo (lluvia, nieve, viento)?","¿Quién te enseñó a apreciar las cosas pequeñas de la vida?","¿Hay algún idioma que hayas aprendido solo de observar a alguien?","¿Qué significa que hay idiomas 'que no se aprenden en la escuela'?","¿Cómo se relaciona este poema con la memoria y la familia?"],
+      act1:{title:"Actividad 1 – El idioma que aprendí",desc:"Escribe un poema sobre algo que aprendiste de alguien importante, sin palabras y sin clases. ¿Qué es ese idioma? ¿Cómo lo aprendiste?"},
+      act2:{title:"Actividad 2 – Carta a la lluvia",desc:"Escribe una carta a la lluvia agradeciéndole todo lo que te ha enseñado. Debe ser poética y personal."}}
+    ]
+  },
+  '3':{
+    topics:[
+      {id:'t3-1',icon:'📰',title:'El reportaje que cambió la historia',type:'Noticia',meta:'Lectura extensa • 12 min',text:`<p>El 3 de junio de 1977, el periódico El Diario Nacional publicó en su primera plana un reportaje de doce páginas que ningún editor había querido publicar en los últimos dos años. Lo escribió Fernanda Solís, una periodista de 28 años que llevaba tres años investigando en silencio.</p><p>El reportaje documentaba, con nombres, fechas y testimonios, cómo cuatro empresas de la región habían estado vertiendo desechos químicos directamente al río Azul, el mismo que abastecía de agua potable a más de doscientas mil personas.</p><p>Fernanda había comenzado su investigación después de que su propio hijo, de cuatro años, fuera hospitalizado por contaminación hídrica. Los médicos le dijeron que había muchos casos similares, pero que nadie hablaba porque "era un tema complicado."</p><p>Durante tres años, Fernanda entrevistó a trabajadores de las empresas, a funcionarios municipales, a médicos y a familias afectadas. Reunió más de ochocientos documentos, fotografías e informes de laboratorio. Dos periódicos rechazaron el reportaje. Un tercero la amenazó con demandarla. Un editor de El Diario Nacional, de nombre Rodrigo Valdez, finalmente decidió publicarlo.</p><p>"Si no publicamos esto, no somos un periódico", dijo Valdez. "Somos un catálogo de anuncios."</p><p>La reacción fue inmediata. En 48 horas, la Procuraduría Federal abrió una investigación. En tres semanas, dos de las cuatro empresas fueron clausuradas. Los directivos de las otras dos enfrentaron cargos. Las autoridades municipales que sabían y callaron fueron destituidas.</p><p>Pero el costo personal para Fernanda fue alto. Perdió su trabajo al año siguiente, cuando El Diario Nacional cambió de dueño. Fue demandada en seis ocasiones, aunque todas las demandas fueron desestimadas. Durante dos años, su familia recibió amenazas.</p><p>Hoy, a sus cincuenta y tres años, Fernanda Solís imparte clases de periodismo en la universidad. En su primera clase siempre dice lo mismo: "El periodismo no es un trabajo. Es una decisión. Y como toda decisión, tiene consecuencias."</p><p>El río Azul tardó quince años en recuperarse. Las empresas pagan hasta hoy una compensación anual al municipio. Y el reportaje de Fernanda Solís se estudia en doce países como ejemplo de periodismo de investigación.</p>`,
+      comprension:["¿Qué documentaba el reportaje de Fernanda Solís?","¿Cuánto tiempo duró la investigación de Fernanda?","¿Por qué comenzó Fernanda su investigación?","¿Qué dijo el editor Rodrigo Valdez antes de publicar?","¿Cuáles fueron las consecuencias del reportaje para las empresas?"],
+      reflexion:["¿Qué te dice esta historia sobre el coraje personal frente a las injusticias?","¿Crees que vale la pena sacrificar la seguridad personal por denunciar algo injusto?","¿Qué papel juega el periodismo en una sociedad democrática?","¿Conoces algún caso similar en tu comunidad o país?","¿Qué harías tú si descubrieras algo así en tu comunidad?"],
+      act1:{title:"Actividad 1 – Análisis del reportaje",desc:"Identifica en la historia los elementos de un reportaje periodístico: hechos, fuentes, contexto, impacto. Organízalos en una tabla."},
+      act2:{title:"Actividad 2 – Tu reportaje",desc:"Escribe el primer párrafo de un reportaje sobre un problema real de tu escuela o comunidad. Incluye: qué pasó, quiénes están involucrados y por qué importa."}},
+      {id:'t3-2',icon:'📖',title:'El último guardián del bosque',type:'Cuento',meta:'Lectura extensa • 14 min',text:`<p>Nadie en el pueblo recordaba desde cuándo estaba Evaristo en el bosque. Los niños que ahora tenían cuarenta años lo recordaban exactamente igual que hoy: viejo, callado, con una vara en la mano y botas de hule siempre embarradas de tierra roja.</p><p>Evaristo no era guardabosques oficial. Nunca tuvo nombramiento, sueldo ni uniforme. Simplemente, un día había llegado al bosque y se había quedado. Y el bosque, de alguna manera que nadie podía explicar, nunca había vuelto a sufrir incendios, talas ilegales ni invasiones.</p><p>La gente del pueblo lo temía un poco. No porque fuera peligroso, sino porque sabía cosas que uno no esperaba que supiera. Si alguien había tirado basura en el bosque, Evaristo aparecía en su puerta al día siguiente, sin decir nada, y esperaba a que la persona recogiera lo que había dejado. Nadie nunca le preguntó cómo se enteraba.</p><p>Cuando llegó la empresa maderera, con sus contratos firmados y sus camiones listos, Evaristo se paró en medio del camino de tierra. Solo. Con su vara.</p><p>El gerente de la empresa, un hombre de traje gris que nunca había pisado tierra que no fuera un estacionamiento, le explicó que tenían todos los permisos. Evaristo lo escuchó completo. Luego señaló con su vara un árbol enorme, de tronco grueso y copa alta: "¿Ves ese árbol? Tiene ciento cuarenta años. Tú tienes cuarenta y tres. Él te va a sobrevivir si lo dejas."</p><p>El gerente llamó a la policía. La policía llegó, vio a Evaristo, y ninguno de los tres oficiales se bajó del vehículo. El jefe de la policía llamó por radio al alcalde. El alcalde llamó al gobernador. El gobernador, por razones que nunca quedaron completamente claras, ordenó la suspensión temporal del proyecto.</p><p>La suspensión temporal duró diecisiete años. La empresa nunca volvió.</p><p>Un invierno, Evaristo no apareció por el pueblo durante tres semanas. El carpintero fue a buscarlo. Lo encontró en su cabaña, en paz, con la vara apoyada en la pared y una libreta sobre la mesa.</p><p>La libreta contenía cuatrocientas páginas escritas a mano. No era un diario: era un inventario completo del bosque. Cada árbol catalogado por especie, edad y ubicación. Cada animal registrado. Cada planta medicinal anotada con sus usos. Tres generaciones de observación contenidas en cuatrocientas páginas.</p><p>Hoy ese bosque es reserva natural. La libreta de Evaristo está en el museo regional. Y cada año, el pueblo celebra el Día del Bosque plantando un árbol nuevo. En la entrada, hay una placa que dice simplemente: "Guardado por quien nunca recibió las gracias."</p>`,
+      comprension:["¿Qué hacía Evaristo si alguien tiraba basura en el bosque?","¿Qué dijo Evaristo al gerente sobre el árbol de 140 años?","¿Por qué no se bajaron los policías de su vehículo?","¿Qué contenía la libreta de Evaristo?","¿Qué dice la placa en la entrada del bosque?"],
+      reflexion:["¿Qué hace que Evaristo sea un personaje memorable?","¿Por qué crees que los policías no se bajaron del vehículo?","¿Qué dice este cuento sobre el poder moral de una sola persona?","¿Qué significa guardar algo 'sin recibir las gracias'?","¿Qué forma de cuidado del medio ambiente puedes tú ejercer en tu comunidad?"],
+      act1:{title:"Actividad 1 – El inventario del bosque",desc:"Imagina que eres Evaristo. Escribe una página de su libreta describiendo un árbol específico del bosque: su historia, sus características, lo que ha visto."},
+      act2:{title:"Actividad 2 – Discurso de reconocimiento",desc:"Escribe el discurso que el pueblo daría en el Día del Bosque, honrando la memoria de Evaristo."}},
+      {id:'t3-3',icon:'🌿',title:'La última cosecha',type:'Leyenda',meta:'Lectura extensa • 13 min',text:`<p>En los valles del norte, donde el maíz crece tan alto que los niños se pierden entre las milpas, existe una leyenda que las abuelas cuentan solo en octubre, cuando la cosecha termina y la tierra descansa.</p><p>Hace muchas generaciones, cuando los dioses aún caminaban entre los surcos, había una mujer llamada Ixchel que plantaba sola. Su esposo había muerto joven, sus hijos vivían en la ciudad, y ella se negaba a abandonar la milpa que su bisabuela había trabajado.</p><p>Cada año plantaba, cuidaba y cosechaba. Sola. Y cada año, la cosecha de Ixchel era la más abundante del valle, aunque su parcela era la más pequeña.</p><p>Los vecinos la envidiaban y la admiraban a la vez. Algunos decían que hablaba con la tierra. Otros que los pájaros la ayudaban a sembrar. Otros, los más viejos, decían simplemente que la tierra reconoce cuando alguien la ama.</p><p>El año en que Ixchel cumplió ochenta, supo que era su última cosecha. No estaba enferma, simplemente lo supo, con esa certeza tranquila que tienen los viejos que han aprendido a escuchar al cuerpo.</p><p>Plantó ese año no solo maíz sino también semillas de todo tipo: calabaza, frijol, chía, hierbas medicinales, flores. Plantó cosas que no cosecharía. Plantó para quienes vinieran después.</p><p>En noviembre, cuando los últimos elotes fueron recogidos, Ixchel no amaneció en su casa. La buscaron en el campo y la encontraron en el centro de la milpa, de rodillas, con las manos hundidas en la tierra hasta las muñecas.</p><p>No estaba muerta: estaba dormida, con una sonrisa que los que la vieron nunca pudieron describir con palabras ordinarias.</p><p>La despertaron con dificultad. No habló durante tres días. Cuando finalmente habló, dijo solo esto: "Me estaban enseñando lo que sigue."</p><p>Murió en primavera. El día que la enterraron, brotaron en toda la milpa flores que nadie había plantado, de colores que los más viejos dijeron no haber visto nunca.</p><p>Desde entonces, en octubre, cuando la cosecha termina, se dice que la tierra guarda en ella algo de cada persona que la ha trabajado. Y que los que saben escuchar pueden oír, entre los surcos vacíos, los pasos de todos los que sembraron antes.</p>`,
+      comprension:["¿Por qué era especial la cosecha de Ixchel?","¿Cómo explicaban los vecinos el éxito de Ixchel?","¿Cómo supo Ixchel que era su última cosecha?","¿Qué plantó ese último año y por qué?","¿Qué dijeron los viejos sobre las flores el día del entierro?"],
+      reflexion:["¿Qué te dice esta leyenda sobre la relación entre los seres humanos y la naturaleza?","¿Qué significa plantar cosas que no cosecharás?","¿Conoces a alguien que trabaje o cuide algo sin esperar beneficio propio?","¿Cómo entiendes la frase 'me estaban enseñando lo que sigue'?","¿Qué tradición de tu cultura se parece a la leyenda de Ixchel?"],
+      act1:{title:"Actividad 1 – La carta de Ixchel a sus hijos",desc:"Escribe la carta que Ixchel podría haberle dejado a sus hijos en la ciudad, explicando por qué nunca abandonó la milpa."},
+      act2:{title:"Actividad 2 – La leyenda de mi abuela",desc:"Entrevista a una persona mayor de tu familia o comunidad y escribe una historia de su vida en forma de leyenda."}},
+      {id:'t3-4',icon:'⚡',title:'El mito de los dos soles',type:'Mito',meta:'Lectura extensa • 11 min',text:`<p>Al principio, el mundo tenía dos soles. No era algo extraordinario para quienes nacieron bajo su doble luz: simplemente así era el mundo. Había días de sombras dobles, tardes donde el horizonte ardía en dos puntos distintos, y noches que nunca eran del todo oscuras.</p><p>Los dos soles tenían nombres. El primero, Kaán, era el sol del oriente, joven y brillante, que salía con prisa y calentaba rápido. El segundo, Muul, era el sol del poniente, antiguo y rojizo, que tardaba en salir pero duraba más.</p><p>Durante mil años, los dos soles se respetaron. Nunca cruzaban el mismo cielo al mismo tiempo: uno salía cuando el otro se estaba poniendo, y en el breve espacio entre los dos, el mundo vivía su único momento de penumbra perfecta.</p><p>Pero llegó un tiempo de sequía. Las cosechas fallaron. Los ríos bajaron. La gente miraba al cielo con desesperación, buscando nubes donde no había.</p><p>Kaán, el joven, decidió que si él brillaba más fuerte y por más horas, podría evaporar el agua de los océanos y llevarla a las nubes. Empezó a salir más temprano y a acostarse más tarde.</p><p>Muul lo vio y tuvo miedo. "Si pierdo mi espacio en el cielo, dejaré de existir", pensó. Empezó también a extender sus horas, a brillar cuando no le correspondía.</p><p>Los dos soles terminaron en el mismo cielo. El calor fue insoportable. El poco agua que quedaba se evaporó. La tierra se agrietó. Los animales buscaron cuevas. La gente enterró a sus muertos en tierra seca.</p><p>Los dioses mayores se reunieron y decidieron que uno de los dos soles debía apagarse. Llamaron a Kaán y Muul y les dijeron lo que habían decidido. Ninguno de los dos quiso ser el que se apagara.</p><p>Fue entonces que Muul, el viejo, habló: "Yo soy el antiguo. He visto más. Sé que nada dura para siempre." Y se apagó.</p><p>El mundo quedó con un solo sol. Más frío que antes, más oscuro. Pero vivo.</p><p>Dicen que cuando el sol se pone de color rojo al atardecer, es el recuerdo de Muul todavía ardiendo en el horizonte, negándose a desaparecer del todo.</p>`,
+      comprension:["¿Cómo se llamaban los dos soles?","¿Por qué empezó Kaán a brillar más?","¿Qué consecuencias tuvo que los dos soles brillaran al mismo tiempo?","¿Por qué decidieron los dioses apagar uno de los soles?","¿Quién se apagó voluntariamente y por qué?"],
+      reflexion:["¿Qué dice este mito sobre el sacrificio por el bien común?","¿Crees que fue justa la decisión de Muul? ¿Por qué?","¿Conoces situaciones donde el miedo a perder algo cause más daño que la pérdida misma?","¿Qué valor representa Muul al decir 'nada dura para siempre'?","¿Qué observaciones de la naturaleza podría estar explicando este mito?"],
+      act1:{title:"Actividad 1 – El discurso de los soles",desc:"Escribe el debate entre Kaán y Muul frente a los dioses. Cada uno argumenta por qué el otro debe apagarse. Luego escribe la decisión final de Muul."},
+      act2:{title:"Actividad 2 – El mito de mi comunidad",desc:"Identifica un conflicto real de tu comunidad (escasez de agua, contaminación, espacio) e inventa un mito que lo explique con personajes divinos."}},
+      {id:'t3-5',icon:'📜',title:'Las cartas de Adela',type:'Cuento',meta:'Lectura extensa • 15 min',text:`<p>Adela comenzó a escribir cartas a los quince años. No a amigos ni a parientes: a personas que nunca respondían.</p><p>La primera carta fue para el arquitecto que diseñó el puente nuevo de su ciudad, que era feo pero resistente. Le escribió: "Diseñó usted algo que dura, aunque no guste. Creo que eso es más valioso que lo contrario." No envió la carta.</p><p>A los dieciséis, escribió al director de la orquesta de su ciudad, cuyo nombre nunca recordaba pero cuya voz sí, porque una vez lo escuchó hablar sobre la música con los ojos cerrados. Le escribió que había aprendido más de ese momento que de cuatro años de clases.</p><p>A los diecisiete, escribió al señor que vendía periódicos en la esquina, que siempre tenía el mismo sombrero y la misma sonrisa aunque lloviera. Le dijo que su constancia era una forma de arte que muy poca gente sabía reconocer.</p><p>Las cartas nunca se enviaron. Las guardaba en una caja de madera que fue llenándose con los años. Había cartas para extraños en el metro, para médicos de guardia nocturna, para cocineras de comedores escolares, para maestros que probablemente ya no recordaban haberla tenido como alumna.</p><p>A los treinta, Adela se mudó y encontró la caja. La abrió con cuidado. Leyó cada carta.</p><p>Encontró en ellas un mapa de todo lo que la había formado: los valores que había aprendido sin que nadie se los enseñara directamente, las personas invisibles que la habían educado sin saberlo, las pequeñas grandezas que el mundo cotidiano desperdicia por no tener a nadie que las nombre.</p><p>Publicó las cartas en un blog. Sin decir que eran suyas, sin dar nombres. Simplemente "Cartas no enviadas."</p><p>En seis meses, miles de personas comenzaron a dejar comentarios. Muchos decían que las cartas hablaban de personas de sus propias vidas. Una mujer mayor dejó un comentario que decía: "Creo que la carta del periódico es sobre mi padre. Gracias por haberlo visto."</p><p>Adela nunca reveló que era la autora. Pero siguió escribiendo. Y cada carta nueva comenzaba igual: "Usted no me recuerda. Pero yo sí lo recuerdo a usted."</p>`,
+      comprension:["¿A quién escribió Adela su primera carta?","¿Por qué escribió al vendedor de periódicos?","¿Por qué nunca envió las cartas?","¿Qué descubrió Adela al releer las cartas a los treinta años?","¿Cómo reaccionó la gente al blog?"],
+      reflexion:["¿Hay alguien en tu vida a quien deberías escribirle una carta de gratitud?","¿Qué personas 'invisibles' te han formado sin saberlo?","¿Por qué crees que Adela nunca reveló que era la autora?","¿Qué dice este cuento sobre las personas que nadie nota pero que todos necesitan?","¿Qué carta escribirías tú que nunca enviarías?"],
+      act1:{title:"Actividad 1 – Tu carta no enviada",desc:"Escribe una carta a alguien que te ha formado sin saberlo: un maestro, un vecino, un desconocido. Sé específico sobre qué aprendiste de esa persona."},
+      act2:{title:"Actividad 2 – Las personas invisibles",desc:"Escribe un texto describiendo a tres personas 'invisibles' de tu escuela o comunidad y el valor específico de lo que hacen cada día."}}
+    ]
+  }
+};
+
+// Custom topics storage
+let customTopics=JSON.parse(localStorage.getItem('customTopics')||'[]');
+
+// ──────────────── GRADE 2 LOGIC ────────────────
+let currentGenre='';
+let currentGrade='';
+let currentReadingData=null;
+
+function selectGenre(genre,grade){
+  currentGenre=genre;currentGrade=grade;
+  // highlight
+  document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  // render
+  const container=document.getElementById(`readings-container-${grade}`);
+  const list=document.getElementById(`readings-list-${grade}`);
+  list.style.display='block';
+  const items=content[grade][genre];
+  container.innerHTML=items.map((item,i)=>`
+    <div class="reading-item reveal" onclick="openReading('${genre}','${i}','${grade}')">
+      <div class="reading-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="reading-info">
+        <div class="reading-title">${item.title}</div>
+        <div class="reading-meta">${item.meta}</div>
+      </div>
+      <div class="reading-arrow">→</div>
+    </div>`).join('');
+  // trigger reveal
+  setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible')),100);
+}
+
+function openReading(genre,idx,grade){
+  currentReadingData={genre,idx:parseInt(idx),grade};
+  const d=grade==='3'?null:content[grade][genre][parseInt(idx)];
+  if(!d)return;
+  renderReadingPage(d,grade);
+  goTo('page-reading');
+}
+
+function openTopic3(topicId){
+  const topic=content['3'].topics.find(t=>t.id===topicId);
+  if(!topic) return;
+  currentReadingData={type:'topic3',topicId};
+  renderReadingPage3(topic);
+  goTo('page-reading');
+}
+
+function renderReadingPage(d,grade){
+  // breadcrumb
+  const genreNames={cuentos:'Cuentos',novelas:'Novelas',fabulas:'Fábulas',mitos:'Mitos',leyendas:'Leyendas',poemas:'Poemas'};
+  document.getElementById('reading-breadcrumb').innerHTML=`<span onclick="goTo('page-home')" style="cursor:pointer">Inicio</span><span class="sep">/</span><span onclick="goTo('page-2grado')" style="cursor:pointer">2° Secundaria</span><span class="sep">/</span><span>${genreNames[currentGenre]||''}</span><span class="sep">/</span><span>${d.title}</span>`;
+  document.getElementById('reading-back-btn').onclick=()=>goTo('page-2grado');
+  document.getElementById('reading-page-title').innerHTML=d.title;
+
+  document.getElementById('reading-content-area').innerHTML=`
+    <h2>${d.title}</h2>
+    <span class="genre-tag">${d.meta}</span>
+    <div class="reading-text">${d.text}</div>`;
+
+  // Comprensión
+  document.getElementById('comprension-questions').innerHTML=d.comprension.map((q,i)=>`
+    <div class="question-item">
+      <div class="question-num">PREGUNTA ${i+1}</div>
+      <div class="question-text">${q}</div>
+      <textarea class="answer-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+    </div>`).join('');
+
+  // Reflexión
+  document.getElementById('reflexion-questions').innerHTML=d.reflexion.map((q,i)=>`
+    <div class="question-item">
+      <div class="question-num">PREGUNTA ${i+1}</div>
+      <div class="question-text">${q}</div>
+      <textarea class="answer-input" placeholder="Reflexiona y escribe tu respuesta..."></textarea>
+    </div>`).join('');
+
+  // Activities
+  document.getElementById('activities-content').innerHTML=`
+    <div class="activity-item">
+      <div class="activity-title">▸ ${d.act1.title}</div>
+      <div class="activity-desc">${d.act1.desc}</div>
+      <textarea class="activity-area" placeholder="Desarrolla aquí tu actividad..."></textarea>
+    </div>
+    <div class="activity-item">
+      <div class="activity-title">▸ ${d.act2.title}</div>
+      <div class="activity-desc">${d.act2.desc}</div>
+      <textarea class="activity-area" placeholder="Desarrolla aquí tu actividad..."></textarea>
+    </div>`;
+}
+
+function renderReadingPage3(topic){
+  document.getElementById('reading-breadcrumb').innerHTML=`<span onclick="goTo('page-home')" style="cursor:pointer">Inicio</span><span class="sep">/</span><span onclick="goTo('page-3grado')" style="cursor:pointer">3° Secundaria</span><span class="sep">/</span><span>${topic.title}</span>`;
+  document.getElementById('reading-back-btn').onclick=()=>goTo('page-3grado');
+  document.getElementById('reading-page-title').innerHTML=topic.title;
+
+  document.getElementById('reading-content-area').innerHTML=`
+    <h2>${topic.title}</h2>
+    <span class="genre-tag">${topic.type} • ${topic.meta}</span>
+    <div class="reading-text">${topic.text}</div>`;
+
+  document.getElementById('comprension-questions').innerHTML=topic.comprension.map((q,i)=>`
+    <div class="question-item">
+      <div class="question-num">PREGUNTA ${i+1}</div>
+      <div class="question-text">${q}</div>
+      <textarea class="answer-input" placeholder="Escribe tu respuesta aquí..."></textarea>
+    </div>`).join('');
+
+  document.getElementById('reflexion-questions').innerHTML=topic.reflexion.map((q,i)=>`
+    <div class="question-item">
+      <div class="question-num">PREGUNTA ${i+1}</div>
+      <div class="question-text">${q}</div>
+      <textarea class="answer-input" placeholder="Reflexiona y escribe tu respuesta..."></textarea>
+    </div>`).join('');
+
+  document.getElementById('activities-content').innerHTML=`
+    <div class="activity-item">
+      <div class="activity-title">▸ ${topic.act1.title}</div>
+      <div class="activity-desc">${topic.act1.desc}</div>
+      <textarea class="activity-area" placeholder="Desarrolla aquí tu actividad..."></textarea>
+    </div>
+    <div class="activity-item">
+      <div class="activity-title">▸ ${topic.act2.title}</div>
+      <div class="activity-desc">${topic.act2.desc}</div>
+      <textarea class="activity-area" placeholder="Desarrolla aquí tu actividad..."></textarea>
+    </div>`;
+}
+
+// ──────────────── GRADE 3 ────────────────
+function renderGrade3Topics(){
+  const grid=document.getElementById('topics-list-3');
+  const allTopics=[...content['3'].topics,...customTopics.filter(t=>t.grade==='3')];
+  grid.innerHTML=allTopics.map(t=>`
+    <div class="topic-card reveal" onclick="${t.id&&t.id.startsWith('t3')?`openTopic3('${t.id}')`:t.id?`openCustomTopic('${t.id}')`:``}">
+      <div class="topic-icon">${t.icon||'📄'}</div>
+      <div class="topic-info">
+        <div class="topic-title">${t.title}</div>
+        <div class="topic-meta">${t.meta||t.type||''}</div>
+      </div>
+      <div class="topic-badge">${t.type||'Lectura'}</div>
+    </div>`).join('');
+  setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible')),100);
+}
+
+// ──────────────── ADD TOPIC ────────────────
+function saveTopic(){
+  const name=document.getElementById('topic-name').value.trim();
+  const grade=document.getElementById('topic-grade').value;
+  const genre=document.getElementById('topic-genre').value;
+  const title=document.getElementById('topic-title').value.trim();
+  const textContent=document.getElementById('topic-content').value.trim();
+  const comprLine=document.getElementById('topic-comprension').value.trim();
+  const reflLine=document.getElementById('topic-reflexion').value.trim();
+  const actLine=document.getElementById('topic-activities').value.trim();
+
+  if(!name||!grade||!title||!textContent){
+    showToast('⚠ Completa los campos obligatorios');return;
+  }
+
+  const comprArr=comprLine.split('\n').filter(l=>l.trim()).map(l=>l.replace(/^\d+\.\s*/,''));
+  const reflArr=reflLine.split('\n').filter(l=>l.trim()).map(l=>l.replace(/^\d+\.\s*/,''));
+  const actArr=actLine.split('\n').filter(l=>l.trim());
+
+  const newTopic={
+    id:'custom-'+Date.now(),
+    icon:'📝',
+    title:title,
+    type:genre||'Lectura',
+    meta:name+' • '+grade+'° Secundaria',
+    grade:grade,
+    text:`<p>${textContent.split('\n\n').join('</p><p>')}</p>`,
+    comprension:comprArr.length?comprArr:['¿De qué trata el texto?','¿Quiénes son los personajes?','¿Dónde ocurre?','¿Qué problema se presenta?','¿Cómo termina?'],
+    reflexion:reflArr.length?reflArr:['¿Qué enseñanza te deja?','¿Cómo te sentiste al leerlo?','¿Te identificas con algún personaje?','¿Qué harías diferente?','¿Qué aprendiste?'],
+    act1:{title:'Actividad 1',desc:actArr[0]||'Escribe un resumen del texto con tus propias palabras.'},
+    act2:{title:'Actividad 2',desc:actArr[1]||'Crea una ilustración o descripción visual del texto.'}
+  };
+
+  customTopics.push(newTopic);
+  localStorage.setItem('customTopics',JSON.stringify(customTopics));
+  showToast('✓ Tema guardado exitosamente');
+  updateCustomTopicsPreview();
+  // clear form
+  ['topic-name','topic-title','topic-content','topic-comprension','topic-reflexion','topic-activities'].forEach(id=>document.getElementById(id).value='');
+}
+
+function openCustomTopic(id){
+  const topic=customTopics.find(t=>t.id===id);
+  if(!topic) return;
+  currentReadingData={type:'custom',id};
+  renderReadingPage3(topic);
+  goTo('page-reading');
+}
+
+function handleFileUpload(event){
+  const file=event.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const text=e.target.result;
+    document.getElementById('topic-content').value=text.substring(0,3000);
+    showToast('✓ Archivo cargado');
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+function updateCustomTopicsPreview(){
+  const el=document.getElementById('custom-topics-preview');
+  const mine=customTopics;
+  if(!mine.length){el.textContent='No hay temas agregados aún.';return;}
+  el.innerHTML=mine.map(t=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)"><strong>${t.title}</strong><br><span style="color:var(--accent2);font-size:11px">${t.type} • ${t.grade}° Secundaria</span></div>`).join('');
+}
+
+function submitQuiz(){
+  showToast('✓ Respuestas guardadas exitosamente');
+}
+
+// ──────────────── SCROLL REVEAL ────────────────
+const revealObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+// Re-observe after navigation
+const origGoTo=goTo;
+
+// Scroll parallax background text
+window.addEventListener('scroll',()=>{
+  const bgText=document.querySelector('.hero-bg-text');
+  if(bgText){bgText.style.transform=`translateY(${window.scrollY*0.3}px)`}
+});
+</script>
+</body>
+</html>
